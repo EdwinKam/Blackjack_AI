@@ -9,7 +9,10 @@ import java.util.*;
 public class Main {
     public static  int numset = 2; //how many set of card will be use
     //public static double percent = 0.65;//how many cards used before before shuffling
-    public static int gamenum = 20; //how many games you want
+    public static int gamenum = 200000000; //how many games you want
+    public static int step = gamenum/10;
+    public static int printgame=1;
+    public static int countg=0;
     public static double percent =0.65;
     //function
     //function
@@ -59,16 +62,16 @@ public class Main {
                 if(start<=1000){
                     l4000++;
                     start=4000;
-                    System.out.println("------------------------------------------\nReset money to $4000");
+//                    System.out.println("------------------------------------------\nReset money to $4000");
                     break;
                 }else if(start>=7000) {
                     start = 4000;
                     w4000++;
-                    System.out.println("------------------------------------------\nReset money to $4000");
+//                    System.out.println("------------------------------------------\nReset money to $4000");
                     break;
                 }
-                System.out.println("====================New Game===================");
-                System.out.printf("Game %d\n",gamecount + 1);
+//                System.out.println("====================New Game===================");
+//                System.out.printf("Game %d\n",gamecount + 1);
                 intialhands(player,psize);
                 intialhands(dealer,dsize);
 
@@ -76,44 +79,44 @@ public class Main {
                             if (positive>=4) {
                                 back=true;
                                 if(lastwin&&back){
-                                    System.out.println("last game won and double bet");
+//                                    System.out.println("last game won and double bet");
                                 }
                                 if(twentyFive(lastgame*2)<start/10){
                                     setbet(twentyFive(lastgame*2));
-                                    System.out.printf("Current positivity: %d.\tLast game bet was: %d\n", positive, lastgame);
-                                    System.out.println("Double bet of lastgame");
-                                    System.out.printf("$$$$$$set bet to $ %.1f.\n", bet[0]);
+//                                    System.out.printf("Current positivity: %d.\tLast game bet was: %d\n", positive, lastgame);
+//                                    System.out.println("Double bet of lastgame");
+//                                    System.out.printf("$$$$$$set bet to $ %.1f.\n", bet[0]);
                                 }else{
                                     setbet(twentyFive(start/10));
-                                    System.out.printf("Current positivity: %d.\tLast game bet was: %d\n", positive, lastgame);
-                                    System.out.println("Set bet to 1/10 of money");
-                                    System.out.printf("$$$$$$set bet to $ %.1f.\n", bet[0]);
+//                                    System.out.printf("Current positivity: %d.\tLast game bet was: %d\n", positive, lastgame);
+//                                    System.out.println("Set bet to 1/10 of money");
+//                                    System.out.printf("$$$$$$set bet to $ %.1f.\n", bet[0]);
                                 }
                             } else if(lastwin&&back) {
                                 back=true;
                                 setbet(twentyFive(lastgame));
-                                System.out.printf("Current positivity: %d.\tLast game bet was: %d\n", positive, lastgame);
-                                System.out.println("Double bet of lastgame");
-                                System.out.printf("$$$$$$set bet to $ %.1f.\n", bet[0]);
-                                System.out.println("last game won and double, this game keep last game bet");
+//                                System.out.printf("Current positivity: %d.\tLast game bet was: %d\n", positive, lastgame);
+//                                System.out.println("Double bet of lastgame");
+//                                System.out.printf("$$$$$$set bet to $ %.1f.\n", bet[0]);
+//                                System.out.println("last game won and double, this game keep last game bet");
 
                             } else{
                                 back=false;
                                 setbet(twentyFive(start/40));
-                                System.out.printf("Current positivity: %d.\tLast game bet was: %d\n", positive, lastgame);
-                                System.out.println("Set bet to 1/40 of money");
-                                System.out.printf("$$$$$$set bet to $ %.1f.\n", bet[0]);
+//                                System.out.printf("Current positivity: %d.\tLast game bet was: %d\n", positive, lastgame);
+//                                System.out.println("Set bet to 1/40 of money");
+//                                System.out.printf("$$$$$$set bet to $ %.1f.\n", bet[0]);
                             }
 
 
-                System.out.println("Card left: "+(totalcard-cardcount+1));//+1 because cardcount was int = 1
+//                System.out.println("Card left: "+(totalcard-cardcount+1));//+1 because cardcount was int = 1
                 lastgame = (int)bet[0];
                 player[handscount*10 + 0] = intdis();//disturbiting cards
                 player[handscount*10 + 1] = intdis();
                 coutcard(player, "Player",handscount);//cout player hand
                 dealer[0] = intdis();//disturbiting cards
                 dealer[1] = intdis();
-                System.out.printf("Dealer has %s\n", display(dealer[0]));
+//                System.out.printf("Dealer has %s\n", display(dealer[0]));
                 coutcard(dealer, "Dealer",0);
                 checkdouble = 0;//initialize double flag//blackjack(player, "Player", handscount);//check if player has blackjack
                 int temp = value(player[handscount * 10 + 0]) + value(player[handscount * 10 + 1]);//sum of player hands
@@ -121,21 +124,21 @@ public class Main {
 
                 if (blackjack(dealer, "Dealer", 0) && blackjack(player, "Player", handscount))
                 {
-                    System.out.println("PUSH!!!");
+//                    System.out.println("PUSH!!!");
                 }
                 else if (blackjack(dealer, "Dealer", 0) && !blackjack(player, "Player", handscount))//dealer has bj but player dont
                 {
-                    System.out.println("SORRY!!");
+//                    System.out.println("SORRY!!");
                 }
                 else if (blackjack(player, "Player", handscount) && !blackjack(dealer, "Dealer", 0))//player has blackjack
                 {
-                    System.out.println("Dealer no blackjack");
+//                    System.out.println("Dealer no blackjack");
                     bet[handscount] = bet[handscount] * 1.5;
-                    System.out.printf("Player gets $ %.1f \n", bet[handscount]);
+//                    System.out.printf("Player gets $ %.1f \n", bet[handscount]);
                 }
                 else if (!blackjack(dealer, "Dealer", 0)&&!blackjack(player, "Player", handscount))//if dealer no blackjack and player no blackjack
                 {
-                    System.out.println("-----------------Call section-----------------");
+//                    System.out.println("-----------------Call section-----------------");
                     if (player[handscount * 10 + 0] == player[handscount * 10 + 1] && player[handscount * 10 + 0] < 10)//pairs except 10
                     {
                         play(splitaction(player[handscount * 10 + 0]));//go to splite with that card
@@ -154,13 +157,13 @@ public class Main {
 
                 result();
                 lastwin=(test<start);//start bigger then won
-                System.out.printf("Player won: $ %.1f\tDealer won: $ %.1f\n",lastp,lastd );
-                System.out.printf("Player win: $ %.1f\tDealer win: $ %.1f\n",playercount,dealercount );
-                System.out.printf("4000Player win: $ %.1f\n",start);
+//                System.out.printf("Player won: $ %.1f\tDealer won: $ %.1f\n",lastp,lastd );
+//                System.out.printf("Player win: $ %.1f\tDealer win: $ %.1f\n",playercount,dealercount );
+//                System.out.printf("4000Player win: $ %.1f\n",start);
                 lastp=playercount;
                 lastd=dealercount;
-                System.out.printf("Player net winning: $%.1f\n", playercount - dealercount);
-                System.out.printf("Positive: %d\n", positive);
+//                System.out.printf("Player net winning: $%.1f\n", playercount - dealercount);
+//                System.out.printf("Positive: %d\n", positive);
 
                 if (playercount - dealercount>maxmoney) //if current net win > peak
                 {
@@ -177,10 +180,14 @@ public class Main {
                 // file.record((int)playercount - (int)dealercount);
                 // file.recordString("\n");
             } while (cardcount < totalcard * percent);//how much of the card
-            System.out.printf("Gamecount: %d\tThis set used card count: %d",gamecount,cardcount);
+            if(gamecount>printgame){
+                System.out.printf("Gamecount: %d\tThis set used card count: %d",gamecount,cardcount);
+                System.out.printf("   Simulation ongoing (%d/10)...",countg++);
+                printgame+=step;
+            }
 
         }
-        System.out.println();
+//        System.out.println();
         System.out.println("===============================================================================");
         System.out.format("%-16s:%7.0f    %-10s:%5.2f\n", "Player win game", playerwin,"Playerwin rate",playerwin / gamecount);
         System.out.format("%-16s:%7.0f    %-10s:%5.2f\n", "Dealer win game", dealerwin,"Dealerwin rate",dealerwin / gamecount);
@@ -203,23 +210,23 @@ public class Main {
         //coutcard(player, "Player",handscount);//cout player hand
         if (blackjack(player, "Player", handscount) && !blackjack(dealer, "Dealer",0))
         {
-            System.out.println("Dealer no blackjack");
+//            System.out.println("Dealer no blackjack");
             //bet[handscount] = bet[handscount] * 1.5;
-            System.out.printf("Player gets: $ %.1f\n", bet[handscount]);
+//            System.out.printf("Player gets: $ %.1f\n", bet[handscount]);
         }
         else if (blackjack(dealer, "Dealer",0) && !blackjack(player, "Player", handscount))
         {
-            System.out.println("SORRY!!");
+//            System.out.println("SORRY!!");
         }
         else if (blackjack(dealer, "Dealer", 0) && blackjack(player, "Player", handscount))
         {
-            System.out.println("PUSH!!!");
+//            System.out.println("PUSH!!!");
         }
         else if (!blackjack(dealer, "Dealer",0))//if dealer no blackjack
         {
             if (player[handscount*10 + 0] == player[handscount * 10 + 1] && player[handscount * 10 + 0] < 10)//pairs except 10
             {
-                System.out.println("!!!!!!!!!!!!!!");
+//                System.out.println("!!!!!!!!!!!!!!");
                 play(splitaction(player[handscount * 10 + 0]));//go to splite with that card
             }
             else if (checkace(player, handscount)) //if player has an ace
@@ -246,7 +253,7 @@ public class Main {
             arr[i] = temp;
             // System.out.printf("%d ", i);
         }
-        System.out.println("\n***Shuffling***");
+//        System.out.println("\n***Shuffling***");
     }
 
     public static void create(int[] poker, int numset)
@@ -273,31 +280,33 @@ public class Main {
 
     public static void print(int[] arr, int numset)
     {
-        //cout << "  " << numset << " set of card in play. Shuffled deck: ";
-        System.out.printf("   %d set of card in play. Shuffled deck: ", numset);
-        int totalcard1 = numset * 52+1;
-        for (int i = 1; i < totalcard1; i++)
-        {
-            if (arr[i]==0)
-            {
-                System.err.println("error8");
-                System. exit(0);
-            }
-            System.out.printf("%s ", display(arr[i]));;
-
-        }
-        System.out.println();
+        return;
+//        cout << "  " << numset << " set of card in play. Shuffled deck: ";
+//        System.out.printf("   %d set of card in play. Shuffled deck: ", numset);
+//        int totalcard1 = numset * 52+1;
+//        for (int i = 1; i < totalcard1; i++)
+//        {
+//            if (arr[i]==0)
+//            {
+//                System.err.println("error8");
+//                System. exit(0);
+//            }
+//            System.out.printf("%s ", display(arr[i]));;
+//
+//        }
+//        System.out.println();
     }
 
     public static void printf(String[] arr, final int numset)
     {
-        int totalcard = numset * 52;
-        System.out.print("Suffled deck: ");
-        for (int i = 1; i <= totalcard; i++)
-        {
-            //cout << arr[i] << " ";
-            System.out.printf("%s ", arr[i]);;
-        }
+        return; //no outprint
+//        int totalcard = numset * 52;
+//        System.out.print("Suffled deck: ");
+//        for (int i = 1; i <= totalcard; i++)
+//        {
+//            //cout << arr[i] << " ";
+//            System.out.printf("%s ", arr[i]);;
+//        }
     }
 
     public static int intdis()
@@ -607,7 +616,7 @@ public class Main {
         {
             case 1: //hit
                 //cout  << handscount + 1 << "player called hit" << endl;
-                System.out.printf("%dplayer called hit\n", handscount+1);
+//                System.out.printf("%dplayer called hit\n", handscount+1);
                 player[++playerhandcount] = intdis();//distribute from play[2]
                 psum = sum(player, handscount);//player sum
                 coutcard(player, "Player", handscount);//display card;
@@ -644,8 +653,8 @@ public class Main {
                 checkdouble = 1;//double flag
                 bet[handscount] = bet[handscount] * 2;//double the bet
                 // cout << handscount + 1 << "player called double" << endl;
-                System.out.printf("%dplayer called double\n", handscount+1);
-                System.out.printf("$$bet of $ %.1f \n", bet[handscount]);
+//                System.out.printf("%dplayer called double\n", handscount+1);
+//                System.out.printf("$$bet of $ %.1f \n", bet[handscount]);
                 player[handscount * 10 + 2] = intdis();
                 acevalue(player, handscount);//determine ace value
                 coutcard(player, "Player", handscount);
@@ -654,14 +663,14 @@ public class Main {
             case 3://stand
                 acevalue(player, handscount);
                 //cout << handscount + 1 << "player called stand\t\t\tFinal: " <<handscount +1<< "Player sum: " << sum(player, handscount) << endl;
-                System.out.printf("%dplayer called stand\n", handscount+1);
+//                System.out.printf("%dplayer called stand\n", handscount+1);
                 //coutcard(player, "Player",handscount);
 
                 break;
             case 4: //split
 
-                System.out.println("(((((((((((((((((((((((((((((((((((((((((((((((((((((((((((");
-                System.out.printf("%dplayer called split\n", handscount+1);
+//                System.out.println("(((((((((((((((((((((((((((((((((((((((((((((((((((((((((((");
+//                System.out.printf("%dplayer called split\n", handscount+1);
                 int i = 0;
                 if(pan>80){
                     pan=0;
@@ -691,10 +700,10 @@ public class Main {
                 player[i * 10 + 1] = intdis();//assign second card to second hand
                 coutcard(player, "Player", i);//display second hand
                 //handscount--;//next hand
-                System.out.printf("----------------%dPlayer turn-----------------", handscount+1);
+//                System.out.printf("----------------%dPlayer turn-----------------", handscount+1);
                 start();//finish first hand
                 handscount = i;//next hand
-                System.out.printf("----------------%dPlayer turn-----------------", handscount+1);
+//                System.out.printf("----------------%dPlayer turn-----------------", handscount+1);
                 coutcard(player, "Player", handscount);//display second hand
                 //cout << "count" << handscount << endl;
                 playerhandcount = 1 + i * 10;//make sure disturebute to next stack
@@ -744,7 +753,7 @@ public class Main {
         {
             if (dealerflag == 1) {
                 //cout << "----------------Dealer turn-------------------\n";
-                System.out.println("----------------Dealer turn-------------------");
+//                System.out.println("----------------Dealer turn-------------------");
                 coutcard(dealer, "Dealer", 0);
                 dealerflag = 0;//set dealer flag to 0 so it wouldnt display again
             }
@@ -757,21 +766,21 @@ public class Main {
             {
                 //coutcard(dealer, "Dealer", 0);//dealer stand and display
                 //cout << "Dealer stand\t\t\tDealer Sum: "<< sum(dealer,0 )<<endl;
-                System.out.printf("Dealer stand \t\t\tdealer sum: %d\n", sum(dealer,0));
+//                System.out.printf("Dealer stand \t\t\tdealer sum: %d\n", sum(dealer,0));
 
 
             }
             else if (checkace(dealer, 0) && sum(dealer, 0) > 7 && sum(dealer, 0) < 12)//dealer has ace and dealer sum-1 is 7-10
             {
                 acevalue(dealer, 0);
-                System.out.printf("Dealer stand \t\t\tdealer sum: %d\n", sum(dealer,0));
+//                System.out.printf("Dealer stand \t\t\tdealer sum: %d\n", sum(dealer,0));
 
 
             }
             else if (checkace(dealer, 0) && (sum(dealer, 0) - 1) == 6) //soft 17, ace and 6
             {
                 // cout << "Dealer soft 17!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << endl;
-                System.out.println("Dealer soft 17!!!!!!!!!!!!!!!!!!!!!");
+//                System.out.println("Dealer soft 17!!!!!!!!!!!!!!!!!!!!!");
                 dealer[dealerhandcount++] = intdis();
                 acevalue(dealer, 0);
                 coutcard(dealer, "Dealer", 0);
@@ -870,9 +879,10 @@ public class Main {
 
     public static void coutcard(int[] arr, String name,int hand)
     {
-        int startpoint = hand * 10;
-        //cout << hand +1<< name << " card: ";
-        System.out.format("%d%s card:%-20s%d%s sum: %-4dP: %d\n", hand+1, name, tostring(arr,startpoint),hand+1,name,sum(arr, hand), positive);
+        return; //no outprint
+//        int startpoint = hand * 10;
+//        //cout << hand +1<< name << " card: ";
+//        System.out.format("%d%s card:%-20s%d%s sum: %-4dP: %d\n", hand+1, name, tostring(arr,startpoint),hand+1,name,sum(arr, hand), positive);
 
 
         // System.out.printf("%d%s sum: %d   P: %d\n",hand+1,name,sum(arr, hand), positive);
@@ -928,53 +938,53 @@ public class Main {
     public static void result()
     {
         int itrystack = 0;//try from array[0]
-        while (player[itrystack*10] != 0) {
-            System.out.print("[FINAL]");
-            coutcard(player, "Player", itrystack);
-            itrystack++;
-            count20(itrystack);
-
-        }
-        System.out.print("[FINAL]");
-        coutcard(dealer, "Dealer", 0);
+//        while (player[itrystack*10] != 0) {
+//            System.out.print("[FINAL]");
+//            coutcard(player, "Player", itrystack);
+//            itrystack++;
+//            count20(itrystack);
+//
+//        }
+//        System.out.print("[FINAL]");
+//        coutcard(dealer, "Dealer", 0);
         int trystack = 0;//try from array[0]
-        System.out.println();
+//        System.out.println();
         while (player[trystack*10] != 0) {
             if (sum(player, trystack) < 22 && sum(dealer, 0) < 22) {
                 if (blackjack(player, "Player", trystack) && blackjack(dealer, "Dealer", 0)) {
-                    System.out.printf("======%dTIE game\n",trystack  + 1 );
+//                    System.out.printf("======%dTIE game\n",trystack  + 1 );
                     tiegame++;
                     b20--;
                 }
                 else if (blackjack(player, "Player", trystack))
                 {
-                    System.out.printf("======%dPlayer win!!!!!\n",trystack  + 1 );
+//                    System.out.printf("======%dPlayer win!!!!!\n",trystack  + 1 );
                     playerwin++;
                     win20(trystack);
-                    System.out.printf("%dPlayer win: $ %.1f\n",trystack  + 1,bet[trystack]);
+//                    System.out.printf("%dPlayer win: $ %.1f\n",trystack  + 1,bet[trystack]);
                     playercount += bet[trystack];//player get the bet
                     start+= bet[trystack];
                 }
                 else if (sum(player, trystack) > sum(dealer, 0))
                 {
-                    System.out.printf("======%dPlayer win!!!!!\n",trystack  + 1 );
+//                    System.out.printf("======%dPlayer win!!!!!\n",trystack  + 1 );
                     playerwin++;
-                    System.out.printf("%dPlayer win: $ %.1f\n",trystack  + 1,bet[trystack]);
+//                    System.out.printf("%dPlayer win: $ %.1f\n",trystack  + 1,bet[trystack]);
                     playercount += bet[trystack];//player get the bet
                     start+= bet[trystack];
                     win20(trystack);
                 }
                 else if (sum(player, trystack) < sum(dealer, 0))
                 {
-                    System.out.printf("======%dDealer win!!!!!\n",trystack  + 1 );
+//                    System.out.printf("======%dDealer win!!!!!\n",trystack  + 1 );
                     dealerwin++;
-                    System.out.printf("%dPlayer lose: $ %.1f\n",trystack  + 1,bet[trystack]);
+//                    System.out.printf("%dPlayer lose: $ %.1f\n",trystack  + 1,bet[trystack]);
                     dealercount += bet[trystack];//dealer gets the bet
                     start-= bet[trystack];
                 }
                 else
                 {
-                    System.out.printf("======%dTIE game\n",trystack  + 1 );
+//                    System.out.printf("======%dTIE game\n",trystack  + 1 );
                     tiegame++;
                     b20--;
                 }
@@ -986,15 +996,15 @@ public class Main {
             {
                 if (sum(player, trystack) >21)//if player bust
                 {
-                    System.out.printf("======%dPlayer busted!!!!!\n",trystack  + 1 );
-                    System.out.printf("%dPlayer lose: $ %.1f\n",trystack  + 1,bet[trystack]);
+//                    System.out.printf("======%dPlayer busted!!!!!\n",trystack  + 1 );
+//                    System.out.printf("%dPlayer lose: $ %.1f\n",trystack  + 1,bet[trystack]);
                     dealercount += bet[trystack];//dealer gets the bet
                     start-= bet[trystack];
                 }
                 else if (sum(dealer, 0)>21)//dealer busted
                 {
-                    System.out.printf("======%dDealer busted!!!!!\n",trystack  + 1 );
-                    System.out.printf("%dPlayer get: $ %.1f\n",trystack  + 1,bet[trystack]);
+//                    System.out.printf("======%dDealer busted!!!!!\n",trystack  + 1 );
+//                    System.out.printf("%dPlayer get: $ %.1f\n",trystack  + 1,bet[trystack]);
                     playercount += bet[trystack];//player get the bet
                     start+= bet[trystack];
                     win20(trystack);
@@ -1006,7 +1016,7 @@ public class Main {
             }
             trystack ++;//inc
         }
-        System.out.println("----------------------------------------------");
+//        System.out.println("----------------------------------------------");
     }
 
 
@@ -1014,16 +1024,16 @@ public class Main {
     {
         if (sum(arr, 0) > 21)
         {
-            System.out.println("Dealerbusts >21");
+//            System.out.println("Dealerbusts >21");
             playerwin++;
             if (handscount==2)
             {
-                System.out.println("hi");
+//                System.out.println("hi");
             }
             for (int i = 0; i < handscount+1; i++)
             {
                 //playercount += bet[i];//in case if player doubles
-                System.out.printf("%dPlayer wins: $%.1f\n", i+1, bet[i]);
+//                System.out.printf("%dPlayer wins: $%.1f\n", i+1, bet[i]);
             }
         }
 
@@ -1032,8 +1042,8 @@ public class Main {
     public static void pbust(int[] arr,  int hand)
     {
         if (sum(arr, hand) > 21) {
-            System.out.println("Playerbusts >21");
-            System.out.printf("%dPlayer loses: $ %.1f\n", handscount + 1, bet[hand]);
+//            System.out.println("Playerbusts >21");
+//            System.out.printf("%dPlayer loses: $ %.1f\n", handscount + 1, bet[hand]);
             dealerwin++;
         }
 
@@ -1064,7 +1074,7 @@ public class Main {
                 }
 
             }
-            System.out.printf("=====%s has blackjack!!!!\n",name);
+//            System.out.printf("=====%s has blackjack!!!!\n",name);
             return true;
         }
         else if (arr[2] == 0&& sum(arr, hand) == 21)//if third card not yet disturbuted
