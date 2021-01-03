@@ -9,7 +9,7 @@ import java.util.*;
 public class Main {
     public static  int numset = 2; //how many set of card will be use
     //public static double percent = 0.65;//how many cards used before before shuffling
-    public static int gamenum = 200000000; //how many games you want
+    public static int gamenum = 20000000; //how many games you want
     public static int step = gamenum/10;
     public static int printgame=1;
     public static int countg=0;
@@ -181,8 +181,8 @@ public class Main {
                 // file.recordString("\n");
             } while (cardcount < totalcard * percent);//how much of the card
             if(gamecount>printgame){
-                System.out.printf("Gamecount: %d\tThis set used card count: %d",gamecount,cardcount);
-                System.out.printf("   Simulation ongoing (%d/10)...",countg++);
+                System.out.printf("Gamecount: %d\tused card count: %d",gamecount,cardcount);
+                System.out.printf("   Simulation ongoing (%d/10)...\n",countg++);
                 printgame+=step;
             }
 
