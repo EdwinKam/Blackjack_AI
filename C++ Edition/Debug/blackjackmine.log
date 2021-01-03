@@ -1,0 +1,7 @@
+﻿  blackjack.cpp
+C:\Users\kamsh\Documents\Git.mine\Data-Analysis\blackjackmine\blackjack.cpp(125,20): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+C:\Users\kamsh\Documents\Git.mine\Data-Analysis\blackjackmine\blackjack.cpp(184,28): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+C:\Users\kamsh\Documents\Git.mine\Data-Analysis\blackjackmine\blackjack.cpp(188,30): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+C:\Users\kamsh\Documents\Git.mine\Data-Analysis\blackjackmine\blackjack.cpp(252,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+C:\Users\kamsh\Documents\Git.mine\Data-Analysis\blackjackmine\blackjack.cpp(253,20): warning C4018: '<=': signed/unsigned mismatch
+  blackjackmine.vcxproj -> C:\Users\kamsh\Documents\Git.mine\Data-Analysis\blackjackmine\Debug\blackjackmine.exe
