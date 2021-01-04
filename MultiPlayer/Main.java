@@ -6,7 +6,22 @@ import java.util.*;
 //  Copyright ©️ 2020 Edwin. All rights reserved.
 //8/21/2020 java version
 //4000 verison multi player
-
+class Player{
+    double winning=0; //money
+    int []hand= new int[1000]; //hand, ten hands max
+    double []bet= new double[10];
+    int handscount=0;
+    int sum;
+    int cardcount=1;
+    double playerwin, dealerwin, tiegame, split, doublerate,lastp,lastd;
+    int leastmoney=0, gap=0;
+    int maxmoney=0,userinput;
+    double start=4000;
+    
+    Player(){
+        
+    }
+}
 public class Main {
     public static  int numset = 2; //how many set of card will be use
     //public static double percent = 0.65;//how many cards used before before shuffling
@@ -22,7 +37,7 @@ public class Main {
     public static int []poker = new int [1 + totalcard];//number of card in play
     public static int []shuffnum= new int [totalcard];
     public static int []dealer =new int [10];
-    public static int []player= new int[1000];
+//    public static int []player= new int[1000];
     public static double []bet= new double[10];
     public static int handscount=0;
     public static int psize = 1000;
@@ -48,6 +63,9 @@ public class Main {
 
     public static void main(String[] args) {
         create(poker, numset);
+        Player[] p = new Player[3];
+        p[0]=new Player();
+        
         while (gamecount < gamenum)
         {//loop until desired game amount played
             shuffle(poker, numset);
@@ -70,7 +88,7 @@ public class Main {
                 }
                 System.out.println("====================New Game===================");
                 System.out.printf("Game %d\n",gamecount + 1);
-                intialhands(player,psize);
+                intialhands(p[0].hand,psize);
                 intialhands(dealer,dsize);
 
                 double test=start;
@@ -109,39 +127,39 @@ public class Main {
 
                 System.out.println("Card left: "+(totalcard-cardcount+1));//+1 because cardcount was int = 1
                 lastgame = (int)bet[0];
-                player[handscount*10 + 0] = intdis();//disturbiting cards
-                player[handscount*10 + 1] = intdis();
-                coutcard(player, "Player",handscount);//cout player hand
+                p[0].hand[handscount*10 + 0] = intdis();//disturbiting cards
+                p[0].hand[handscount*10 + 1] = intdis();
+                coutcard(p[0].hand, "Player",handscount);//cout player hand
                 dealer[0] = intdis();//disturbiting cards
                 dealer[1] = intdis();
                 System.out.printf("Dealer has %s\n", display(dealer[0]));
                 coutcard(dealer, "Dealer",0);
                 checkdouble = 0;//initialize double flag//blackjack(player, "Player", handscount);//check if player has blackjack
-                int temp = value(player[handscount * 10 + 0]) + value(player[handscount * 10 + 1]);//sum of player hands
+                int temp = value(p[0].hand[handscount * 10 + 0]) + value(p[0].hand[handscount * 10 + 1]);//sum of player hands
 
 
-                if (blackjack(dealer, "Dealer", 0) && blackjack(player, "Player", handscount))
+                if (blackjack(dealer, "Dealer", 0) && blackjack(p[0].hand, "Player", handscount))
                 {
                     System.out.println("PUSH!!!");
                 }
-                else if (blackjack(dealer, "Dealer", 0) && !blackjack(player, "Player", handscount))//dealer has bj but player dont
+                else if (blackjack(dealer, "Dealer", 0) && !blackjack(p[0].hand, "Player", handscount))//dealer has bj but player dont
                 {
                     System.out.println("SORRY!!");
                 }
-                else if (blackjack(player, "Player", handscount) && !blackjack(dealer, "Dealer", 0))//player has blackjack
+                else if (blackjack(p[0].hand, "Player", handscount) && !blackjack(dealer, "Dealer", 0))//player has blackjack
                 {
                     System.out.println("Dealer no blackjack");
                     bet[handscount] = bet[handscount] * 1.5;
                     System.out.printf("Player gets $ %.1f \n", bet[handscount]);
                 }
-                else if (!blackjack(dealer, "Dealer", 0)&&!blackjack(player, "Player", handscount))//if dealer no blackjack and player no blackjack
+                else if (!blackjack(dealer, "Dealer", 0)&&!blackjack(p[0].hand, "Player", handscount))//if dealer no blackjack and player no blackjack
                 {
                     System.out.println("-----------------Call section-----------------");
-                    if (player[handscount * 10 + 0] == player[handscount * 10 + 1] && player[handscount * 10 + 0] < 10)//pairs except 10
+                    if (p[0].hand[handscount * 10 + 0] == player[handscount * 10 + 1] && p[0].hand[handscount * 10 + 0] < 10)//pairs except 10
                     {
-                        play(splitaction(player[handscount * 10 + 0]));//go to splite with that card
+                        play(splitaction(p[0].hand[handscount * 10 + 0]));//go to splite with that card
                     }
-                    else if (checkace(player, handscount)) //if player has an ace
+                    else if (checkace(p[0].hand, handscount)) //if player has an ace
                     {
                         play(aceaction(temp - 1));
                     }
@@ -200,25 +218,25 @@ public class Main {
     {
         checkdouble = 0;//initialize double flag
         //blackjack(player, "Player", handscount);//check if player has blackjack
-        int temp = value(player[handscount*10 + 0]) + value(player[handscount*10 + 1]);//sum of player hands
+        int temp = value(p[0].hand[handscount*10 + 0]) + value(p[0].hand[handscount*10 + 1]);//sum of player hands
         //coutcard(player, "Player",handscount);//cout player hand
-        if (blackjack(player, "Player", handscount) && !blackjack(dealer, "Dealer",0))
+        if (blackjack(p[0].hand, "Player", handscount) && !blackjack(dealer, "Dealer",0))
         {
             System.out.println("Dealer no blackjack");
             //bet[handscount] = bet[handscount] * 1.5;
             System.out.printf("Player gets: $ %.1f\n", bet[handscount]);
         }
-        else if (blackjack(dealer, "Dealer",0) && !blackjack(player, "Player", handscount))
+        else if (blackjack(dealer, "Dealer",0) && !blackjack(p[0].hand, "Player", handscount))
         {
             System.out.println("SORRY!!");
         }
-        else if (blackjack(dealer, "Dealer", 0) && blackjack(player, "Player", handscount))
+        else if (blackjack(dealer, "Dealer", 0) && blackjack(p[0].hand, "Player", handscount))
         {
             System.out.println("PUSH!!!");
         }
         else if (!blackjack(dealer, "Dealer",0))//if dealer no blackjack
         {
-            if (player[handscount*10 + 0] == player[handscount * 10 + 1] && player[handscount * 10 + 0] < 10)//pairs except 10
+            if (p[0].hand[handscount*10 + 0] == player[handscount * 10 + 1] && p[0].hand[handscount * 10 + 0] < 10)//pairs except 10
             {
                 System.out.println("!!!!!!!!!!!!!!");
                 play(splitaction(player[handscount * 10 + 0]));//go to splite with that card
@@ -1098,5 +1116,8 @@ public class Main {
     }
 
 }
+
+
+
 
 
