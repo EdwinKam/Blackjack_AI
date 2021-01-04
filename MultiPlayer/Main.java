@@ -6,22 +6,7 @@ import java.util.*;
 //  Copyright ©️ 2020 Edwin. All rights reserved.
 //8/21/2020 java version
 //4000 verison multi player
-class Player{
-    double winning=0; //money
-    int []hand= new int[1000]; //hand, ten hands max
-    double []bet= new double[10];
-    int handscount=0;
-    int sum;
-    int cardcount=1;
-    double playerwin, dealerwin, tiegame, split, doublerate,lastp,lastd;
-    int leastmoney=0, gap=0;
-    int maxmoney=0,userinput;
-    double start=4000;
-    
-    Player(){
-        
-    }
-}
+
 public class Main {
     public static  int numset = 2; //how many set of card will be use
     //public static double percent = 0.65;//how many cards used before before shuffling
@@ -155,7 +140,7 @@ public class Main {
                 else if (!blackjack(dealer, "Dealer", 0)&&!blackjack(p[0].hand, "Player", handscount))//if dealer no blackjack and player no blackjack
                 {
                     System.out.println("-----------------Call section-----------------");
-                    if (p[0].hand[handscount * 10 + 0] == player[handscount * 10 + 1] && p[0].hand[handscount * 10 + 0] < 10)//pairs except 10
+                    if (p[0].hand[handscount * 10 + 0] == p[0].hand[handscount * 10 + 1] && p[0].hand[handscount * 10 + 0] < 10)//pairs except 10
                     {
                         play(splitaction(p[0].hand[handscount * 10 + 0]));//go to splite with that card
                     }
@@ -236,12 +221,12 @@ public class Main {
         }
         else if (!blackjack(dealer, "Dealer",0))//if dealer no blackjack
         {
-            if (p[0].hand[handscount*10 + 0] == player[handscount * 10 + 1] && p[0].hand[handscount * 10 + 0] < 10)//pairs except 10
+            if (p[0].hand[handscount*10 + 0] == p[0].hand[handscount * 10 + 1] && p[0].hand[handscount * 10 + 0] < 10)//pairs except 10
             {
                 System.out.println("!!!!!!!!!!!!!!");
-                play(splitaction(player[handscount * 10 + 0]));//go to splite with that card
+                play(splitaction(p[0].hand[handscount * 10 + 0]));//go to splite with that card
             }
-            else if (checkace(player, handscount)) //if player has an ace
+            else if (checkace(p[0].hand, handscount)) //if player has an ace
             {
                 play(aceaction(temp - 1));
             }
@@ -380,7 +365,7 @@ public class Main {
 
                 //break;
             case 11:
-                if (blackjack(player, "Player", handscount))
+                if (blackjack(p[0].hand, "Player", handscount))
                     return 3;
                 else
                 {
@@ -627,13 +612,13 @@ public class Main {
             case 1: //hit
                 //cout  << handscount + 1 << "player called hit" << endl;
                 System.out.printf("%dplayer called hit\n", handscount+1);
-                player[++playerhandcount] = intdis();//distribute from play[2]
-                psum = sum(player, handscount);//player sum
-                coutcard(player, "Player", handscount);//display card;
+                p[0].hand[++playerhandcount] = intdis();//distribute from play[2]
+                psum = sum(p[0].hand, handscount);//player sum
+                coutcard(p[0].hand, "Player", handscount);//display card;
 
-                if (sum(player, handscount) < 12 && checkace(player, handscount))//check whether stand with ace
+                if (sum(p[0].hand, handscount) < 12 && checkace(p[0].hand, handscount))//check whether stand with ace
                 {
-                    if (aceaction(sum(player, handscount) - 1) == 1 || aceaction(sum(player, handscount) - 1) == 1)//if supposed hit or double//both changed to 1 hit
+                    if (aceaction(sum(p[0].hand, handscount) - 1) == 1 || aceaction(sum(p[0].hand, handscount) - 1) == 1)//if supposed hit or double//both changed to 1 hit
                     {
                         play(1);//play(hit)
                     }
@@ -643,9 +628,9 @@ public class Main {
 
                     }
                 }
-                else if (sum(player, handscount) < 22)//without ace but <22
+                else if (sum(p[0].hand, handscount) < 22)//without ace but <22
                 {
-                    if (paction(sum(player, handscount)) == 1 || paction(sum(player, handscount)) == 2)//if supposed hit or double
+                    if (paction(sum(p[0].hand, handscount)) == 1 || paction(sum(p[0].hand, handscount)) == 2)//if supposed hit or double
                     {
                         play(1);//play(hit)
                     }
@@ -656,7 +641,7 @@ public class Main {
                     }
                 }
                 else
-                    pbust(player, handscount);//player busts
+                    pbust(p[0].hand, handscount);//player busts
                 break;
             case 2: //double
                 doublerate++;
@@ -665,13 +650,13 @@ public class Main {
                 // cout << handscount + 1 << "player called double" << endl;
                 System.out.printf("%dplayer called double\n", handscount+1);
                 System.out.printf("$$bet of $ %.1f \n", bet[handscount]);
-                player[handscount * 10 + 2] = intdis();
-                acevalue(player, handscount);//determine ace value
-                coutcard(player, "Player", handscount);
-                pbust(player, handscount);//check player busts
+                p[0].hand[handscount * 10 + 2] = intdis();
+                acevalue(p[0].hand, handscount);//determine ace value
+                coutcard(p[0].hand, "Player", handscount);
+                pbust(p[0].hand, handscount);//check player busts
                 break;
             case 3://stand
-                acevalue(player, handscount);
+                acevalue(p[0].hand, handscount);
                 //cout << handscount + 1 << "player called stand\t\t\tFinal: " <<handscount +1<< "Player sum: " << sum(player, handscount) << endl;
                 System.out.printf("%dplayer called stand\n", handscount+1);
                 //coutcard(player, "Player",handscount);
@@ -688,7 +673,7 @@ public class Main {
                 save[pan++] = gamecount + 1;//save split game
 
                 split++;
-                while (player[i * 10] != 0)
+                while (p[0].hand[i * 10] != 0)
                 {
                     i++;
                     //find the next empty stack
@@ -696,25 +681,25 @@ public class Main {
                 if(i==2){
                     // gg=gamecount;
                 }
-                player[handscount * 10 + 1] = intdis();//assign second card to first hand
-                coutcard(player, "Player", handscount);//display 1player
+                p[0].hand[handscount * 10 + 1] = intdis();//assign second card to first hand
+                coutcard(p[0].hand, "Player", handscount);//display 1player
                 //handscount++;//next hand
-                if (player[0]==11){///split the card the second hand
-                    player[i * 10] = 1;//however, if play[0] has ace but value of 11 could lead error
+                if (p[0].hand[0]==11){///split the card the second hand
+                    p[0].hand[i * 10] = 1;//however, if play[0] has ace but value of 11 could lead error
                 }
                 //so just assign it to one
                 else
                 {
-                    player[i * 10] =player[0];//otherwise assign second player the first player[o]
+                    p[0].hand[i * 10] =p[0].hand[0];//otherwise assign second player the first player[o]
                 }
-                player[i * 10 + 1] = intdis();//assign second card to second hand
-                coutcard(player, "Player", i);//display second hand
+                p[0].hand[i * 10 + 1] = intdis();//assign second card to second hand
+                coutcard(p[0].hand, "Player", i);//display second hand
                 //handscount--;//next hand
                 System.out.printf("----------------%dPlayer turn-----------------", handscount+1);
                 start();//finish first hand
                 handscount = i;//next hand
                 System.out.printf("----------------%dPlayer turn-----------------", handscount+1);
-                coutcard(player, "Player", handscount);//display second hand
+                coutcard(p[0].hand, "Player", handscount);//display second hand
                 //cout << "count" << handscount << endl;
                 playerhandcount = 1 + i * 10;//make sure disturebute to next stack
                 //cout << "playerhandcount" << playerhandcount<<endl;
@@ -727,19 +712,19 @@ public class Main {
                 save[pan++]=gamecount;//save split gamecount
                 split++;
                 gg=gamecount;
-                player[1]=intdis();//distribute first hand second card
-                player[10]=player[0];//distribute second hand first card
+                p[0].hand[1]=intdis();//distribute first hand second card
+                p[0].hand[10]=p[0].hand[0];//distribute second hand first card
                 //coutcard(player, "player",handscount);//display first hand
-                acevalue(player, handscount);//determine ace value
-                coutcard(player, "Player", handscount);
-                pbust(player, handscount);//check player busts
+                acevalue(p[0].hand, handscount);//determine ace value
+                coutcard(p[0].hand, "Player", handscount);
+                pbust(p[0].hand, handscount);//check player busts
                 handscount++;
 
-                player[11]=intdis();
+                p[0].hand[11]=intdis();
                 //coutcard(player, "player",handscount);
-                acevalue(player, handscount);//determine ace value
-                coutcard(player, "Player", handscount);
-                pbust(player, handscount);//check player busts
+                acevalue(p[0].hand, handscount);//determine ace value
+                coutcard(p[0].hand, "Player", handscount);
+                pbust(p[0].hand, handscount);//check player busts
                 break;
 
             default:
@@ -753,8 +738,8 @@ public class Main {
     {
         int checkbust = 0;//to see if dealer needs action
         int trystack = 0;//try from array[0]
-        while (player[trystack*10] != 0) {
-            if (sum(player, trystack) < 22) {//if player sum < 21 then dealer needs action
+        while (p[0].hand[trystack*10] != 0) {
+            if (sum(p[0].hand, trystack) < 22) {//if player sum < 21 then dealer needs action
                 checkbust = 1;
             }trystack ++;//inc
         }
@@ -947,9 +932,9 @@ public class Main {
     public static void result()
     {
         int itrystack = 0;//try from array[0]
-        while (player[itrystack*10] != 0) {
+        while (p[0].hand[itrystack*10] != 0) {
             System.out.print("[FINAL]");
-            coutcard(player, "Player", itrystack);
+            coutcard(p[0].hand, "Player", itrystack);
             itrystack++;
             count20(itrystack);
 
@@ -958,14 +943,14 @@ public class Main {
         coutcard(dealer, "Dealer", 0);
         int trystack = 0;//try from array[0]
         System.out.println();
-        while (player[trystack*10] != 0) {
-            if (sum(player, trystack) < 22 && sum(dealer, 0) < 22) {
-                if (blackjack(player, "Player", trystack) && blackjack(dealer, "Dealer", 0)) {
+        while (p[0].hand[trystack*10] != 0) {
+            if (sum(p[0].hand, trystack) < 22 && sum(dealer, 0) < 22) {
+                if (blackjack(p[0].hand, "Player", trystack) && blackjack(dealer, "Dealer", 0)) {
                     System.out.printf("======%dTIE game\n",trystack  + 1 );
                     tiegame++;
                     b20--;
                 }
-                else if (blackjack(player, "Player", trystack))
+                else if (blackjack(p[0].hand, "Player", trystack))
                 {
                     System.out.printf("======%dPlayer win!!!!!\n",trystack  + 1 );
                     playerwin++;
@@ -974,7 +959,7 @@ public class Main {
                     playercount += bet[trystack];//player get the bet
                     start+= bet[trystack];
                 }
-                else if (sum(player, trystack) > sum(dealer, 0))
+                else if (sum(p[0].hand, trystack) > sum(dealer, 0))
                 {
                     System.out.printf("======%dPlayer win!!!!!\n",trystack  + 1 );
                     playerwin++;
@@ -983,7 +968,7 @@ public class Main {
                     start+= bet[trystack];
                     win20(trystack);
                 }
-                else if (sum(player, trystack) < sum(dealer, 0))
+                else if (sum(p[0].hand, trystack) < sum(dealer, 0))
                 {
                     System.out.printf("======%dDealer win!!!!!\n",trystack  + 1 );
                     dealerwin++;
@@ -1003,7 +988,7 @@ public class Main {
             //no dealer or player++ because counted at pbust()
             //display only money counted at pbust or dbust()
             {
-                if (sum(player, trystack) >21)//if player bust
+                if (sum(p[0].hand, trystack) >21)//if player bust
                 {
                     System.out.printf("======%dPlayer busted!!!!!\n",trystack  + 1 );
                     System.out.printf("%dPlayer lose: $ %.1f\n",trystack  + 1,bet[trystack]);
@@ -1116,7 +1101,22 @@ public class Main {
     }
 
 }
-
+class Player{
+    double winning=0; //money
+    int []hand; //new int[1000]; //hand, ten hands max
+//    double []bet= new double[10];
+//    int handscount=0;
+//    int sum;
+//    int cardcount=1;
+//    double playerwin, dealerwin, tiegame, split, doublerate,lastp,lastd;
+//    int leastmoney=0, gap=0;
+//    int maxmoney=0,userinput;
+//    double start=4000;
+    
+     Player(){
+        hand= new int[1000]; //hand, ten hands max
+    }
+}
 
 
 
