@@ -383,20 +383,20 @@ public class Main {
                 int temp = value(player[handscount * 10 + 0]) + value(player[handscount * 10 + 1]);//sum of player hands
                 //coutcard(player, "Player",handscount);//cout player hand
 
-
-                if (blackjack(dealer, "Dealer", 0) && blackjack(player, "Player", handscount))
+                boolean dealerBack = blackjack(dealer, "Dealer", 0);
+                if (dealerBack && blackjack(player, "Player", handscount))
                 {
 
                     //cout << "PUSH!!!!!!\n";
                     System.out.println("PUSH!!!");
                 }
-                else if (blackjack(dealer, "Dealer", 0) && !blackjack(player, "Player", handscount))//dealer has bj but player dont
+                else if (dealerBack && !blackjack(player, "Player", handscount))//dealer has bj but player dont
                 {
 
                     //cout << "SORRY!!\n";
                     System.out.println("SORRY!!");
                 }
-                else if (blackjack(player, "Player", handscount) && !blackjack(dealer, "Dealer", 0))//player has blackjack
+                else if (blackjack(player, "Player", handscount) && !dealerBack)//player has blackjack
                 {
                     //gg = gamecount + 1;
                     //cout << "Dealer no blackjack\n";
@@ -404,7 +404,7 @@ public class Main {
                     bet[handscount] = bet[handscount] * 1.5;
                     System.out.printf("Player gets $ %.1f \n", bet[handscount]);
                 }
-                else if (!blackjack(dealer, "Dealer", 0)&&!blackjack(player, "Player", handscount))//if dealer no blackjack and player no blackjack
+                else if (!dealerBack&&!blackjack(player, "Player", handscount))//if dealer no blackjack and player no blackjack
                 {
                     //cout << "-----------------Call section-----------------\n";
                     System.out.println("-----------------Call section-----------------");
@@ -515,23 +515,33 @@ public class Main {
     }
     public static int intdis()
     {
+        cardcount++;
         int new_card=0;
         boolean isValid=false;
-        int cc =0;
+//        int cc =0;
         while(!isValid){
-            System.out.printf("%dPlease enter 1 card: ",cc++);
-            String temp= s.nextLine();
+            //System.out.printf("%dPlease enter 1 card: ",cc++);
+            String temp= s.next();
+            
             try{
                 new_card= Integer.parseInt(temp);
                 if(new_card>1&&new_card<11){
                     isValid=true;
+                }else{
+                    throw new Exception("invalid number");
                 }
             }catch(Exception e){
-                if(temp=="a"||temp=="A"){
+                if(temp.equals("a")||temp.equals("a")){
                     new_card=1;
                     isValid=true;
-                }else if(temp=="j"||temp=="J"||temp=="q"||temp=="Q"||temp=="K"||temp=="k"){
-                    new_card=10;
+                }else if(temp.equals("j")||temp.equals("J")){
+                    new_card=12;
+                    isValid=true;
+                }else if(temp.equals("q")||temp.equals("Q")){
+                    new_card=13;
+                    isValid=true;
+                }else if(temp.equals("K")||temp.equals("k")){
+                    new_card=14;
                     isValid=true;
                 }
             }
@@ -855,6 +865,7 @@ public class Main {
             case 1: //hit
                 //cout  << handscount + 1 << "player called hit" << endl;
                 System.out.printf("%dplayer called hit\n", handscount+1);
+                System.out.print("Enter player hit card: ");
                 player[++playerhandcount] = intdis();//distribute from play[2]
                 psum = sum(player, handscount);//player sum
                 coutcard(player, "Player", handscount);//display card;
@@ -893,6 +904,7 @@ public class Main {
                 // cout << handscount + 1 << "player called double" << endl;
                 System.out.printf("%dplayer called double\n", handscount+1);
                 System.out.printf("$$bet of $ %.1f \n", bet[handscount]);
+                System.out.print("Enter player double card: ");
                 player[handscount * 10 + 2] = intdis();
                 acevalue(player, handscount);//determine ace value
                 coutcard(player, "Player", handscount);
@@ -907,7 +919,7 @@ public class Main {
                 break;
             case 4: //split
 
-                System.out.println("(((((((((((((((((((((((((((((((((((((((((((((((((((((((((((");
+//                System.out.println("(((((((((((((((((((((((((((((((((((((((((((((((((((((((((((");
                 System.out.printf("%dplayer called split\n", handscount+1);
                 int i = 0;
                 if(pan>80){
@@ -924,6 +936,7 @@ public class Main {
                 if(i==2){
                     // gg=gamecount;
                 }
+                System.out.print("assign second card to first hand: ");
                 player[handscount * 10 + 1] = intdis();//assign second card to first hand
                 coutcard(player, "Player", handscount);//display 1player
                 //handscount++;//next hand
@@ -935,6 +948,7 @@ public class Main {
                 {
                     player[i * 10] =player[0];//otherwise assign second player the first player[o]
                 }
+                System.out.print("assign second card to second hand: ");
                 player[i * 10 + 1] = intdis();//assign second card to second hand
                 coutcard(player, "Player", i);//display second hand
                 //handscount--;//next hand
@@ -1321,10 +1335,19 @@ public class Main {
 
     public static boolean blackjack(int[] arr, String name,int hand)
     {
-        //if (sum(arr, startpoint) == 21)
-        //{
-        //    return true;
-//    }
+        if(name.equals("Dealer")){ //since we only know one card
+            if(checkace(arr,hand) || sum(arr, hand) == 10){ //if dealer has A or 10
+                System.out.print("Dealer has blackjack? y/n");
+                String ans = s.next();
+                if(ans.equals("y")){ //if dealer has blackjack
+                    System.out.print("Enter dealer hidden card: ");
+                    intdis();
+                    return true;
+                }else{
+                    return false;
+                }
+            }
+        }
         int startpoint = hand * 10;
         if (checkace(arr,hand) && sum(arr, hand) == 11)
         {
@@ -1337,7 +1360,6 @@ public class Main {
                 }
 
             }
-            // cout << "========" << name << " has blackjack!!!\n";
             System.out.printf("=====%s has blackjack!!!!\n",name);
             return true;
         }
