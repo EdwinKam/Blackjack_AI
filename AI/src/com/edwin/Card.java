@@ -9,6 +9,18 @@ public class Card {
     Card(Card copy){
         this.id = copy.id;
     }
+
+    public int value(){
+        if(this.id<12){
+            return this.id;
+        }else{
+            return 10;
+        }
+    }
+
+    public int getId(){
+        return this.id;
+    }
     public String toString(){
         switch (this.id)
         {

@@ -8,9 +8,11 @@ class AITest {
 
     @Test
     void main() {
-        Hand hand = new Hand();
-        hand.append(1);
-        hand.append(2);
-        System.out.println(hand);
+        Player p = new Player(1,10);
+        p.addCard(2);
+        p.addCard(2);
+        p.split();
+        p.clearHands();
+        System.out.println(p);
     }
 }
