@@ -55,8 +55,6 @@ public class Player {
         hands.get(hands.size()-1).append(temp);
     }
 
-
-
     //split player index th hand
     public void split(int index){
         assert hands.get(index).canSplit(): "Cant split this hand";
@@ -110,5 +108,9 @@ public class Player {
     public void lose(double mult){
         asset-=curBet*mult;
         curBet*=mult;
+    }
+
+    public int getFirst(int index){
+        return hands.get(index).getFirst();
     }
 }

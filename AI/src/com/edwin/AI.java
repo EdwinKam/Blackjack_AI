@@ -1,5 +1,5 @@
 package com.edwin;
-
+//ooo
 import java.util.Scanner;
 
 public class AI {
@@ -10,6 +10,7 @@ public class AI {
     static Distribute set = new Distribute(numset, percent);
     static Player p = new Player(1, 100);
     static Dealer d = new Dealer();
+    static int handscount=0;
 
     public static void main(String[] args) {
         //CreateFile file = new CreateFile("number2.txt");
@@ -76,7 +77,6 @@ public class AI {
             System.out.println(p);
             //-------------------------
 
-
             if (d.blackjack() && p.blackjack()) {
                 System.out.println("PUSH!!!");
             } else if (d.blackjack() && !p.blackjack())//dealer has bj but player dont
@@ -92,12 +92,12 @@ public class AI {
                 System.out.println("-----------------Call section-----------------");
                 if (p.canSplit(0) && p.handSum(0) != 20)//pairs except 10
                 {
-                    play(splitaction(player[handscount * 10 + 0]));//go to splite with that card
+                    play(splitaction(p.getFirst(handscount)));//go to split with that card
                 } else if (p.hasAce(0)) //if player has an ace
                 {
-                    play(aceaction(temp - 1)); //temp is sum here
+                    play(aceaction(p.handSum(handscount) - 1)); //temp is sum here
                 } else {
-                    play(paction(temp));//just keep playing
+                    play(paction(p.handSum(handscount)));//just keep playing
                 }
                 dealerflag = 1;//make sure only display dealer's turns once
 //                System.out.print("Please enter dealer hidden hand: ");
@@ -121,13 +121,8 @@ public class AI {
                     gap = (int) maxmoney - ((int) playercount - (int) dealercount);
                 }
             }
-            gamecount++;
-            // file.record((int)playercount - (int)dealercount);
-            // file.recordString("\n");
         }
-        while (cardcount < totalcard * percent) ;//how much of the card
-        //cout << "gamecount: " << gamecount << "    This set Used card count: " << cardcount << endl;
-        System.out.printf("Gamecount: %d\tThis set used card count: %d", gamecount, cardcount);
+        System.out.printf("Gamecount: %d\tThis set used card count: %d", curGame, set.gameCount());
 
         System.out.println();
         System.out.println("===============================================================================");
@@ -432,13 +427,13 @@ public class AI {
                 //cout  << handscount + 1 << "player called hit" << endl;
                 System.out.printf("%dplayer called hit\n", handscount+1);
                 System.out.print("Enter player hit card: ");
-                player[++playerhandcount] = intdis();//distribute from play[2]
-                psum = sum(player, handscount);//player sum
-                coutcard(player, "Player", handscount);//display card;
+                p.addCard(set.intdis());//distribute from play[2]
+//                psum = sum(player, handscount);//player sum
+//                coutcard(player, "Player", handscount);//display card;
 
-                if (sum(player, handscount) < 12 && checkace(player, handscount))//check whether stand with ace
+                if (p.handSum(handscount) < 12 && p.hasAce(handscount))//check whether stand with ace
                 {
-                    if (aceaction(sum(player, handscount) - 1) == 1 || aceaction(sum(player, handscount) - 1) == 1)//if supposed hit or double//both changed to 1 hit
+                    if (aceaction(p.handSum(handscount) - 1) == 1)//if supposed hit or double//both changed to 1 hit
                     {
                         play(1);//play(hit)
                     }
@@ -448,9 +443,9 @@ public class AI {
 
                     }
                 }
-                else if (sum(player, handscount) < 22)//without ace but <22
+                else if (p.handSum(handscount) < 22)//without ace but <22
                 {
-                    if (paction(sum(player, handscount)) == 1 || paction(sum(player, handscount)) == 2)//if supposed hit or double
+                    if (paction(p.handSum(handscount)) == 1 || paction(p.handSum(handscount)) == 2)//if supposed hit or double
                     {
                         play(1);//play(hit)
                     }
@@ -461,7 +456,7 @@ public class AI {
                     }
                 }
                 else
-                    pbust(player, handscount);//player busts
+                    p.bust(handscount);//player busts
                 break;
             case 2: //double
                 doublerate++;
@@ -484,28 +479,8 @@ public class AI {
 
                 break;
             case 4: //split
-
-//                System.out.println("(((((((((((((((((((((((((((((((((((((((((((((((((((((((((((");
-                System.out.printf("%dplayer called split\n", handscount+1);
-                int i = 0;
-                if(pan>80){
-                    pan=0;
-                }
-
-
                 split++;
-                while (player[i * 10] != 0)
-                {
-                    i++;
-                    //find the next empty stack
-                }
-                if(i==2){
-                    // gg=gamecount;
-                }
-                System.out.print("assign second card to first hand: ");
-                player[handscount * 10 + 1] = intdis();//assign second card to first hand
-                coutcard(player, "Player", handscount);//display 1player
-                //handscount++;//next hand
+                p.split(handscount); //will assign to next avaiable hand
                 if (player[0]==11){///split the card the second hand
                     player[i * 10] = 1;//however, if play[0] has ace but value of 11 could lead error
                 }

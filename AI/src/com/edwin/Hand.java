@@ -47,6 +47,7 @@ public class Hand {
 
     public boolean bust(){
         if (this.handSum()>21){
+            hand = new ArrayList<>(); //clear()
             return true;
         }else{
             return false;

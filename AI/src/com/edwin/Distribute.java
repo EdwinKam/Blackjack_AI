@@ -96,6 +96,10 @@ public class Distribute {
             shuffle();
         }
     }
+
+    public int gameCount(){
+        return index;
+    }
     private void create(){
         deck[0] = 0;
         for (int i = 0; i < this.numset*4; i++)//new set of card
