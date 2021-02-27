@@ -19,6 +19,10 @@ public class Dealer {
         return hand.bust();
     }
 
+    public int handSum(){
+        return hand.handSum();
+    }
+
     public boolean blackjack(){
         return hand.blackjack();
     }

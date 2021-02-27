@@ -4,17 +4,16 @@ public class test {
     public static void main(String[] args){
         Distribute set = new Distribute(2, 0.6);
         Player p = new Player(1,100);
-        p.setBet(2);
-        p.addCard(8);
-        p.addCard(8);
+        Dealer d = new Dealer(1);
+        p.addCard(10);
+        p.addCard(10);
         p.split();
-
-        p.setDouble(0);
-        p.addCard(3);
-        p.lose(0);
-        p.lose(1);
+        p.addCard(10);
+        p.addCard(p.getLast(),6);
+        p.split();
+        p.addCard(1);
+        p.addCard(p.getLast(),9);
         System.out.println(p);
-        p.clear();
 
         System.out.println(p.asset);
     }

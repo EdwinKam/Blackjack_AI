@@ -109,12 +109,12 @@ public class Player {
         return hands.get(index).getBet();
     }
     public void win(int index){
-        System.out.printf("Player won %.2f\n",hands.get(index).getBet());
+        System.out.printf("Player%d won %.2f\n",index+1,hands.get(index).getBet());
         asset+=hands.get(index).getBet();
     }
 
     public void lose(int index){
-        System.out.printf("Player lose %.2f\n",hands.get(index).getBet());
+        System.out.printf("Player%d lose %.2f\n",index+1,hands.get(index).getBet());
         asset-=hands.get(index).getBet();
     }
 
@@ -123,6 +123,7 @@ public class Player {
     }
 
     public void setDouble(int index){
+        System.out.printf("Player%d called double\n",index+1);
         hands.get(index).doubleHand(); //will set bet
         //need to dist card in main
     }
@@ -137,6 +138,13 @@ public class Player {
                 System.out.println("PUSH");
             }
         }
+    }
+    public int getLast(){
+        return hands.size()-1;
+    }
+
+    public int withoutAce(int index){
+        return hands.get(index).withoutAce();
     }
 
 }

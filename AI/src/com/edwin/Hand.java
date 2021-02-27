@@ -80,6 +80,16 @@ public class Hand {
         return sum;
     }
 
+    public int withoutAce(){
+        int sum=0;
+        for(int i =0;i<hand.size();i++){
+            if(hand.get(i).value()!=1) {
+                sum += hand.get(i).value();
+            }
+        }
+        return sum;
+    }
+
     public int size(){
         return hand.size();
     }
