@@ -5,7 +5,7 @@ import java.util.*;
 //  Created by Edwin Kam on 7/24/20.
 //  Copyright ©️ 2020 Edwin. All rights reserved.
 //8/21/2020 java version
-public class Main {
+public class AI {
     public static  int numset = 2; //how many set of card will be use
     //public static double percent = 0.65;//how many cards used before before shuffling
     public static int gamenum = 3000; //how many games you want
