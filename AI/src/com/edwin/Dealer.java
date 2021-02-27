@@ -4,11 +4,11 @@ import javax.net.ssl.SNIHostName;
 
 public class Dealer {
     private Hand hand;
-    Dealer(){
-        hand = new Hand();
+    Dealer(double base){
+        hand = new Hand(base);
     }
-    public void clear(){
-        hand = new Hand();
+    public void clear(double base){
+        hand = new Hand(base);
     }
 
     public void addCard(int id){

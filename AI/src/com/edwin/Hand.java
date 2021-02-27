@@ -6,14 +6,21 @@ import java.util.List;
 public class Hand {
     private List<Card> hand;
     public boolean hasAce;
+    private double bet; //bet ont this hand
+    private boolean doubled;
     //constructor
-    Hand(){
+    Hand(double base){
         hand = new ArrayList<>();
         hasAce = false;
+        doubled = false;
+        bet=base;
     }
 
     //add cards
     public void append(int num){
+        if(doubled&&hand.size()>=2){
+            throw new IllegalArgumentException("No append again because doubled");
+        }
         if(num==1||num==11){
             hasAce=true;
         }
@@ -22,6 +29,9 @@ public class Hand {
 
     //add card, take Card obj
     public void append(Card card){
+        if(doubled&&hand.size()>=2){
+            throw new IllegalArgumentException("No append again because doubled");
+        }
         if(card.value()==1||card.value()==11){
             hasAce=true;
         }
@@ -64,8 +74,8 @@ public class Hand {
             return 1;
         }
 
-        if(hasAce&&sum==11&&this.size()==2){
-            return 21;
+        if(hasAce&&sum<=11){
+            return sum+10;
         }
         return sum;
     }
@@ -76,6 +86,7 @@ public class Hand {
 
     public boolean canSplit(){ //two cards are the same
         if(hand.size()==2&&hand.get(0).toString().equals(hand.get(1).toString())){
+
             return true;
         }else{
             return false;
@@ -87,6 +98,19 @@ public class Hand {
     }
     public String toString(){
         return hand.toString();
+    }
+
+    public void setBet(double  curBet){
+        bet=curBet;
+    }
+
+    public double getBet() {
+        return bet;
+    }
+
+    public void doubleHand(){
+        doubled = true;
+        setBet(bet*2); //double the bet
     }
 
 }

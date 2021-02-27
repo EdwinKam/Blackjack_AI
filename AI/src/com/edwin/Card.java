@@ -11,8 +11,10 @@ public class Card {
     }
 
     public int value(){
-        if(this.id<12){
+        if(this.id<11){
             return this.id;
+        }else if(this.id==11){
+            return 1;
         }else{
             return 10;
         }

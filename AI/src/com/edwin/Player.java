@@ -7,14 +7,14 @@ import java.util.List;
 public class Player {
     private double baseBet;
     public double curBet;
-    public int lastGame;
+    public double lastGame;
     public double asset; //how much this player has
     private List<Hand> hands;
 
     //constructor
-    Player(int base, int baseMoney){
+    Player(double base, int baseMoney){
         hands = new ArrayList<Hand>(); //can have more hand
-        hands.add(new Hand()); //add one hand to this player, no card in this hand
+        hands.add(new Hand(base)); //add one hand to this player, no card in this hand
         baseBet=base;
         asset=baseMoney;
         curBet=base;
@@ -49,17 +49,21 @@ public class Player {
 
     //split player first hand
     public void split(){
-        assert hands.get(0).canSplit(): "Cant split this hand";
+        if(!hands.get(0).canSplit()){
+            throw new IllegalArgumentException("Card cannot be split");
+        }
         Card temp = hands.get(0).remove();
-        hands.add(new Hand()); //add another hand
+        hands.add(new Hand(curBet)); //add another hand
         hands.get(hands.size()-1).append(temp);
     }
 
     //split player index th hand
     public void split(int index){
-        assert hands.get(index).canSplit(): "Cant split this hand";
+        if(!hands.get(index).canSplit()){
+            throw new IllegalArgumentException("Card cannot be split");
+        }
         Card temp = hands.get(index).remove();
-        hands.add(new Hand()); //add another hand
+        hands.add(new Hand(curBet)); //add another hand
         hands.get(hands.size()-1).append(temp);
     }
 
@@ -77,7 +81,7 @@ public class Player {
 
     public void clear(){
         hands = new ArrayList<Hand>(); //create new hand()
-        hands.add(new Hand()); //add one hand to this player, no card in this hand
+        hands.add(new Hand(baseBet)); //add one hand to this player, no card in this hand
         curBet=baseBet;
     }
 
@@ -91,26 +95,48 @@ public class Player {
             if(i!=0){
                 str+="\nPlayer";
             }
-            str+=String.format("%d: %s \t\tSum: %d",i+1,hands.get(i).toString(), hands.get(i).handSum());
+            str+=String.format("%d: %s \t\tSum: %d Bet: %.2f",i+1,hands.get(i).toString(), hands.get(i).handSum(), hands.get(i).getBet());
         }
         return str;
     }
 
     public void setBet(double mult){
         curBet*=mult;
+        hands.get(0).setBet(curBet);
     }
 
-    public void win(double mult){
-        asset+=curBet*mult;
-        curBet*=mult;
+    public double getBet(int index){
+        return hands.get(index).getBet();
+    }
+    public void win(int index){
+        System.out.printf("Player won %.2f\n",hands.get(index).getBet());
+        asset+=hands.get(index).getBet();
     }
 
-    public void lose(double mult){
-        asset-=curBet*mult;
-        curBet*=mult;
+    public void lose(int index){
+        System.out.printf("Player lose %.2f\n",hands.get(index).getBet());
+        asset-=hands.get(index).getBet();
     }
 
     public int getFirst(int index){
         return hands.get(index).getFirst();
     }
+
+    public void setDouble(int index){
+        hands.get(index).doubleHand(); //will set bet
+        //need to dist card in main
+    }
+
+    public void result(int dsum){
+        for(int i=0;i<hands.size();i++){
+            if(hands.get(i).bust()||dsum>hands.get(i).handSum()){
+                lose(i);
+            }else if(dsum<hands.get(i).handSum()){
+                win(i);
+            }else{
+                System.out.println("PUSH");
+            }
+        }
+    }
+
 }
