@@ -81,13 +81,14 @@ public class Hand {
     }
 
     public int withoutAce(){
+        if(!hasAce){
+            throw new IllegalArgumentException("withoutAce(): there is no Ace");
+        }
         int sum=0;
         for(int i =0;i<hand.size();i++){
-            if(hand.get(i).value()!=1) {
-                sum += hand.get(i).value();
-            }
+            sum += hand.get(i).value();
         }
-        return sum;
+        return sum-1;
     }
 
     public int size(){

@@ -121,4 +121,8 @@ public class Distribute {
 
         }//for
     }
+
+    public boolean getIsSim(){
+        return isSim;
+    }
 }

@@ -10,9 +10,11 @@ public class Player {
     public double lastGame;
     public double asset; //how much this player has
     private List<Hand> hands;
+    private String name;
 
     //constructor
-    Player(double base, int baseMoney){
+    Player(String name, double base, int baseMoney){
+        this.name=name; //player or dealer
         hands = new ArrayList<Hand>(); //can have more hand
         hands.add(new Hand(base)); //add one hand to this player, no card in this hand
         baseBet=base;
@@ -75,6 +77,14 @@ public class Player {
         return hands.get(index).handSum();
     }
 
+    public int handSum(){
+        return hands.get(0).handSum();
+    }
+
+    public boolean hasAce(){
+        return hands.get(0).hasAce;
+    }
+
     public boolean hasAce(int index){
         return hands.get(index).hasAce;
     }
@@ -90,7 +100,7 @@ public class Player {
     }
     //sout player hands
     public String toString(){
-        String str="Player";
+        String str=name;
         for(int i =0;i<hands.size();i++){
             if(i!=0){
                 str+="\nPlayer";
@@ -109,17 +119,21 @@ public class Player {
         return hands.get(index).getBet();
     }
     public void win(int index){
-        System.out.printf("Player%d won %.2f\n",index+1,hands.get(index).getBet());
+        System.out.printf("%s%d won %.2f\n",name,index+1,hands.get(index).getBet());
         asset+=hands.get(index).getBet();
     }
 
     public void lose(int index){
-        System.out.printf("Player%d lose %.2f\n",index+1,hands.get(index).getBet());
+        System.out.printf("%s%d lose %.2f\n",name,index+1,hands.get(index).getBet());
         asset-=hands.get(index).getBet();
     }
 
     public int getFirst(int index){
         return hands.get(index).getFirst();
+    }
+
+    public int face(){
+        return hands.get(0).getFirst();
     }
 
     public void setDouble(int index){
@@ -130,9 +144,9 @@ public class Player {
 
     public void result(int dsum){
         for(int i=0;i<hands.size();i++){
-            if(hands.get(i).bust()||dsum>hands.get(i).handSum()){
+            if(dsum<=21||(hands.get(i).bust()||dsum>hands.get(i).handSum())){
                 lose(i);
-            }else if(dsum<hands.get(i).handSum()){
+            }else if(dsum>21||dsum<hands.get(i).handSum()){
                 win(i);
             }else{
                 System.out.println("PUSH");
@@ -145,6 +159,10 @@ public class Player {
 
     public int withoutAce(int index){
         return hands.get(index).withoutAce();
+    }
+
+    public int withoutAce(){
+        return hands.get(0).withoutAce();
     }
 
 }
