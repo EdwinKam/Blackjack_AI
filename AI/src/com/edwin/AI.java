@@ -1,37 +1,35 @@
-//
-//package com.edwin;
-//
-//import java.util.Scanner;
-//
-//public class AI {
-//    static int numset =2;
-//    static int totalcard = numset*52;;
-//    static int gamenum =100;
-//
-//    public static void main(String[] args) {
-//        //CreateFile file = new CreateFile("number2.txt");
-//        System.out.println("Enter 1 = 124, 2 = 1246, 3 = 138");
-//        System.out.println("--------below 80------------------------");
-//        System.out.println("Enter 4 = 124, 5 = 1246, 6 = 138");
-//        System.out.println("--------below 80------------------------");
-//        System.out.println("Enter 7 = six deck");
-//        Scanner s = new Scanner(System.in);
-//        int userinput = s.nextInt();
-//        while(userinput<1||userinput>7) {
-//            System.out.print("Your choice (1-7): ");
-//            userinput = s.nextInt();
-//        }
+package com.edwin;
+
+import java.util.Scanner;
+
+public class AI {
+    static int numset =2;
+    static int gamenum =100;
+    static double percent = 0.3;
+
+    public static void main(String[] args) {
+        //CreateFile file = new CreateFile("number2.txt");
+        System.out.println("Enter 1 = 124, 2 = 1246, 3 = 138");
+        System.out.println("--------below 80------------------------");
+        System.out.println("Enter 4 = 124, 5 = 1246, 6 = 138");
+        System.out.println("--------below 80------------------------");
+        System.out.println("Enter 7 = six deck");
+        Scanner s = new Scanner(System.in);
+        int userInput = s.nextInt();
+        while(userInput<1||userInput>7) {
+            System.out.print("Your choice (1-7): ");
+            userInput = s.nextInt();
+        }
 //        double percent; //the percentage we are using before reshuffle the cord
-//        if(userinput==7){
-//            numset=6;       //change to play 6 pack
-//            percent=0.75;        //when 1.5 pack left
-//            totalcard=numset*52;
-//        }else{
-//            percent=0.65;
-//        }
-//        int gamecount =0; //current game count
-//        int cardcount =0;
-//        int positive =0;
+        if(userInput==7){
+            numset=6;       //change to play 6 pack
+            percent=0.75;        //when 1.5 pack left
+        }else{
+            percent=0.65;
+        }
+
+        Distribute set = new Distribute(numset,percent);
+        
 //
 //        while (gamecount < gamenum){//loop until desired game amount played
 //            cardcount = 1;
@@ -41,7 +39,7 @@
 //                System.out.printf("Game %d\n",gamecount + 1);
 //                intialhands(player,psize);
 //                intialhands(dealer,dsize);
-//                switch (userinput) {
+//                switch (userInput) {
 //                    case 1: //124    --------------------------------------------------------------------------------
 //                        //124    --------------------------------------------------------------------------------
 //                        //124    --------------------------------------------------------------------------------
@@ -480,52 +478,7 @@
 //
 //        }
 //    }
-//    public static int intdis()
-//    {
-//        cardcount++;
-//        int new_card=0;
-//        boolean isValid=false;
-////        int cc =0;
-//        while(!isValid){
-//            System.out.print("2-10, A-K, \"e\" to exit: ");
-//            String temp= s.next();
-//
-//            try{
-//                new_card= Integer.parseInt(temp);
-//                if(new_card>1&&new_card<11){
-//                    isValid=true;
-//                }else{
-//                    throw new Exception("invalid number");
-//                }
-//            }catch(Exception e){
-//                if(temp.equals("a")||temp.equals("a")){
-//                    new_card=1;
-//                    isValid=true;
-//                }else if(temp.equals("j")||temp.equals("J")){
-//                    new_card=12;
-//                    isValid=true;
-//                }else if(temp.equals("q")||temp.equals("Q")){
-//                    new_card=13;
-//                    isValid=true;
-//                }else if(temp.equals("K")||temp.equals("k")){
-//                    new_card=14;
-//                    isValid=true;
-//                }else if(temp.equals("e")){
-//                    System.exit(0);
-//                }
-//            }
-//        }
-//        if (new_card <= 7 && new_card>= 2)//2-7 positive
-//        {
-//            positive++;
-//        }
-//        else if (new_card > 9 || new_card == 1)//10 and A negetive
-//        {
-//            positive--;
-//        }
-//        return new_card;//distribute the next card
-//
-//    }
+
 //
 //    public static int paction(int choice)//without Ace
 //    {
@@ -1028,126 +981,10 @@
 //
 //
 //    }
-//
-//    public static String display(int value)
-//    {
-//        switch (value)
-//        {
-//            case 1: return "A";
-//            //break;
-//            case 2: return "2";
-//            //break;
-//            case 3: return "3";
-//            // break;
-//            case 4: return "4";
-//            // break;
-//            case 5: return "5";
-//            // break;
-//            case 6: return "6";
-//            //break;
-//            case 7: return "7";
-//            // break;
-//            case 8: return "8";
-//            // break;
-//            case 9: return "9";
-//            // break;
-//            case 10: return "10";
-//            // break;
-//            case 11: return"A";
-//            // break;
-//            case 12: return "J";
-//            // break;
-//            case 13: return "Q";
-//            //  break;
-//            case 14: return "K";
-//            //    break;
-//
-//
-//            default:
-//                System.err.printf("error6 got input of case%d", value);
-//                System. exit(0);
-//                return "error";
-//            // break;
-//
-//
-//        }
-//
-//    }
-//
-//    public static int value(int value)//return card value
-//    {
-//        if (value < 12 || value == 19)
-//        {
-//            return value;
-//        }
-//        else//for 12, 13, 14
-//        {
-//            return 10;
-//        }
-//    }
-//
-//    public static int sum(int[] arr, int hand)
-//    {
-//        int startpoint = hand*10;
-//        int sum = 0;
-//        for (int i = startpoint; i < startpoint+10; i++)
-//        {
-//            sum += value(arr[i]);
-//        }
-//        return sum;
-//    }
-//
-//    public static void coutcard(int[] arr, String name,int hand)
-//    {
-//        int startpoint = hand * 10;
-//        //cout << hand +1<< name << " card: ";
-//        System.out.format("%d%s card:%-20s%d%s sum: %-4dP: %d\n", hand+1, name, tostring(arr,startpoint),hand+1,name,sum(arr, hand), positive);
-//
-//
-//        // System.out.printf("%d%s sum: %d   P: %d\n",hand+1,name,sum(arr, hand), positive);
-//
-//    }
-//
-//    public static String tostring(int[] arr, int startpoint){
-//        String output="";
-//        for (int i = startpoint; i < startpoint +10; i++)
-//        {
-//            if (arr[i] != 0) {
-//                //cout << display(arr[i]) << ", ";
-//                //System.out.printf("%s, ", display(arr[i]));
-//                output = output+display((arr[i]))+", ";
-//            }
-//        }
-//        return output;
-//    }
-//
-//    public static boolean checkace(int[] arr,int hand)
-//    {
-//        int startpoint = hand * 10;
-//        for (int i = startpoint; i < startpoint+10; i++)
-//        {
-//            if (arr[i] == 1||arr[i]==11) {
-//                return true;
-//
-//            }
-//        }
-//        return false;
-//    }
-//
-//    public static void acevalue(int[] arr, int hand)
-//    {
-//        int startpoint = hand * 10;
-//        for (int j = startpoint; j < startpoint+10; j++)
-//        {
-//            if (arr[j] == 1 && sum(arr, startpoint) < 12)//if after stand gets an ace No explod if a=11
-//            {
-//                arr[j] = 11;
-//                //cout << "in ace stand" << endl;
-//                //coutcard(player, "Player",handscount);//display card;
-//            }
-//
-//        }
-//    }
+
+
+
+
 //    public static void count20(int i){
 //        if(bet[i]>=20){
 //            b20++;
@@ -1242,102 +1079,15 @@
 //    }
 //
 //
-//    public static void dbust(int[] arr)
-//    {
-//        if (sum(arr, 0) > 21)
-//        {
-//            System.out.println("Dealerbusts >21");
-//            //cout << "=========Player won!!!!!" << endl;
-//            playerwin++;
-//            if (handscount==2)
-//            {
-//                // handscount--;//becasue I inc handscount in split
-//                //gg=gamecount;
-//
-//                System.out.println("hi");
-//            }
-//            for (int i = 0; i < handscount+1; i++)
-//            {
-//                //playercount += bet[i];//in case if player doubles
-//                //cout << i + 1 << "player wins: $" << bet[i]<<endl;
-//                System.out.printf("%dPlayer wins: $%.1f\n", i+1, bet[i]);
-//                if(i==1)
-//                {
-//                    //gg= gamecount;
-//                }
-//            }
-//        }
+
 //
 //    }
 //
-//    public static void pbust(int[] arr,  int hand)
-//    {
-//        if (sum(arr, hand) > 21)
-//        {
-//            System.out.println("Playerbusts >21");
-//            //cout << "==========Dealer won!!!!!" << endl;
-//            //dealercount += bet[hand];//in case if player doubles
-//            // cout << handscount + 1 << "player loses: $" << bet[hand] << endl;//display before set the bet to 0
-//            //bet[handscount] = 0;
-//            System.out.printf("%dPlayer loses: $ %.1f\n",handscount + 1, bet[hand]);
-//            dealerwin++;
+
 //
-//        }
+
 //
-//    }
-//    public static void intialhands(int []arr,int size)
-//    {
-//
-//        for (int i = 0; i < size; i++)
-//        {
-//            arr[i] = 0;
-//        }
-//        for (int i = 0; i < 10; i++)
-//        {
-//            fifteen[i] = false;
-//        }
-//        dealerhandcount = 2;
-//        playerhandcount = 1;
-//        handscount = 0;
-//
-//    }
-//
-//    public static boolean blackjack(int[] arr, String name,int hand)
-//    {
-//        if(name.equals("Dealer")){ //since we only know one card
-//            if(checkace(arr,hand) || sum(arr, hand) == 10){ //if dealer has A or 10
-//                System.out.print("Dealer has blackjack? y/n");
-//                String ans = s.next();
-//                if(ans.equals("y")){ //if dealer has blackjack
-//                    System.out.print("Enter dealer hidden card: ");
-//                    intdis();
-//                    return true;
-//                }else{
-//                    return false;
-//                }
-//            }
-//        }
-//        int startpoint = hand * 10;
-//        if (checkace(arr,hand) && sum(arr, hand) == 11)
-//        {
-//            for (int j = 0; j < 2; j++)
-//            {
-//                if (arr[j] == 1)//Ace and 10
-//                {
-//                    arr[j] = 11;//set ace to 11
-//
-//                }
-//
-//            }
-//            System.out.printf("=====%s has blackjack!!!!\n",name);
-//            return true;
-//        }
-//        else if (arr[2] == 0&& sum(arr, hand) == 21)//if third card not yet disturbuted
-//        {
-//            return true;
-//        }
-//        else return false;
-//    }
+
 //
 //    public static void setbet(int mult)
 //    {
@@ -1347,8 +1097,3 @@
 //        }
 //    }
 //
-//    public static final <T> void swap (T[] a, int i, int j) {
-//        T t = a[i];
-//        a[i] = a[j];
-//        a[j] = t;
-//    }

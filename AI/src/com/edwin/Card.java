@@ -55,7 +55,7 @@ public class Card {
 
 
             default:
-                System.err.printf("error6 got input of case%d", this.id);
+                System.err.printf("class Card:got input of case%d", this.id);
                 System. exit(0);
                 return "error";
             // break;
