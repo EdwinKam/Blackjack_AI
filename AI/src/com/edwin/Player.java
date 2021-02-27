@@ -27,6 +27,22 @@ public class Player {
         hands.get(index).append(id); //add new card to the index th hand
     }
 
+    public boolean bust(){
+        return hands.get(0).bust();
+    }
+
+    public boolean bust(int index){
+        return hands.get(index).bust();
+    }
+
+    public boolean blackjack(){
+        return hands.get(0).blackjack();
+    }
+
+    public boolean blackjack(int index){
+        return hands.get(index).blackjack();
+    }
+
     //split player first hand
     public void split(){
         assert hands.get(0).canSplit(): "Cant split this hand";
@@ -43,7 +59,7 @@ public class Player {
         hands.get(hands.size()-1).append(temp);
     }
 
-    public void clearHands(){
+    public void clear(){
         hands = new ArrayList<Hand>(); //create new hand()
         hands.add(new Hand()); //add one hand to this player, no card in this hand
     }
@@ -55,7 +71,7 @@ public class Player {
             if(i!=0){
                 str+="\nPlayer";
             }
-            str+=String.format("%d: %s",i+1,hands.get(i).toString());
+            str+=String.format("%d: %s \t\tSum: %d",i+1,hands.get(i).toString(), hands.get(i).handSum());
         }
         return str;
     }

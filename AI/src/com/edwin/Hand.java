@@ -5,19 +5,26 @@ import java.util.List;
 
 public class Hand {
     private List<Card> hand;
-
+    private boolean hasAce;
     //constructor
     Hand(){
         hand = new ArrayList<>();
+        hasAce = false;
     }
 
     //add cards
     public void append(int num){
+        if(num==1||num==11){
+            hasAce=true;
+        }
         hand.add(new Card(num));
     }
 
     //add card, take Card obj
     public void append(Card card){
+        if(card.value()==1||card.value()==11){
+            hasAce=true;
+        }
         hand.add(card);
     }
 
@@ -29,11 +36,35 @@ public class Hand {
 
     }
 
+
+    public boolean blackjack(){
+        if(hand.size()==2&&this.handSum()==21){
+            return true;
+        }
+        return false;
+    }
+
+
+    public boolean bust(){
+        if (this.handSum()>21){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
     //sum of this hand
     public int handSum(){
         int sum=0;
         for(int i =0;i<hand.size();i++){
             sum+=hand.get(i).value();
+        }
+        if(hasAce&&this.size()==1){
+            return 1;
+        }
+
+        if(hasAce&&sum==11&&this.size()==2){
+            return 21;
         }
         return sum;
     }
@@ -43,7 +74,7 @@ public class Hand {
     }
 
     public boolean canSplit(){
-        if(hand.size()==2&&hand.get(0).getId()==hand.get(1).getId()){
+        if(hand.size()==2&&hand.get(0).toString().equals(hand.get(1).toString())){
             return true;
         }else{
             return false;
