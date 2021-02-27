@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Hand {
     private List<Card> hand;
-    private boolean hasAce;
+    public boolean hasAce;
     //constructor
     Hand(){
         hand = new ArrayList<>();
@@ -73,7 +73,7 @@ public class Hand {
         return hand.size();
     }
 
-    public boolean canSplit(){
+    public boolean canSplit(){ //two cards are the same
         if(hand.size()==2&&hand.get(0).toString().equals(hand.get(1).toString())){
             return true;
         }else{

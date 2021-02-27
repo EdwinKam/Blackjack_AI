@@ -3,33 +3,158 @@ package com.edwin;
 import java.util.Scanner;
 
 public class AI {
-    static int numset =2;
-    static int gamenum =100;
+    static int numset = 2;
+    static int gameNum = 100;
+    static int curGame =0;
     static double percent = 0.3;
 
     public static void main(String[] args) {
         //CreateFile file = new CreateFile("number2.txt");
-        System.out.println("Enter 1 = 124, 2 = 1246, 3 = 138");
-        System.out.println("--------below 80------------------------");
-        System.out.println("Enter 4 = 124, 5 = 1246, 6 = 138");
-        System.out.println("--------below 80------------------------");
-        System.out.println("Enter 7 = six deck");
-        Scanner s = new Scanner(System.in);
-        int userInput = s.nextInt();
-        while(userInput<1||userInput>7) {
-            System.out.print("Your choice (1-7): ");
-            userInput = s.nextInt();
-        }
-//        double percent; //the percentage we are using before reshuffle the cord
-        if(userInput==7){
-            numset=6;       //change to play 6 pack
-            percent=0.75;        //when 1.5 pack left
-        }else{
-            percent=0.65;
-        }
+//        System.out.println("Enter 1 = 124, 2 = 1246, 3 = 138");
+//        System.out.println("--------below 80------------------------");
+//        System.out.println("Enter 4 = 124, 5 = 1246, 6 = 138");
+//        System.out.println("--------below 80------------------------");
+//        System.out.println("Enter 7 = six deck");
+//        Scanner s = new Scanner(System.in);
+//        int userInput = s.nextInt();
+//        while (userInput < 1 || userInput > 7) {
+//            System.out.print("Your choice (1-7): ");
+//            userInput = s.nextInt();
+//        }
+////        double percent; //the percentage we are using before reshuffle the cord
+//        if (userInput == 7) {
+//            numset = 6;       //change to play 6 pack
+//            percent = 0.75;        //when 1.5 pack left
+//        } else {
+//            percent = 0.65;
+//        }
 
-        Distribute set = new Distribute(numset,percent);
-        
+        Distribute set = new Distribute(numset, percent);
+        Player p = new Player(1,100);
+        Dealer d = new Dealer();
+        while(curGame++<gameNum){
+            set.checkDeck(); //check if we need to reset the set
+            p.clear();
+            d.clear();
+            System.out.printf("%d=======new game==========\n",curGame);
+            if (set.positive <= 3)//if current poaitive less than this number, then set bet to ...
+            {
+                p.setBet(1);
+                System.out.printf("Current positivity: %d.\tLast game bet was: %d\n", set.positive, p.lastGame);
+                System.out.printf("$$$$$$set bet to $ %.1f.\n", p.curBet);
+            }
+            else //if greater than that positive
+            {
+                if (p.lastGame == 1) {
+                    p.setBet(2);
+                    System.out.printf("Current positivity: %d.\tLast game bet was: %d\n", set.positive, p.lastGame);
+                    System.out.printf("$$$$$$set bet to $ %.1f.\n", p.curBet);
+                } else if (p.lastGame == 4) {
+                    p.setBet(4);
+                    System.out.printf("Current positivity: %d.\tLast game bet was: %d\n", set.positive, p.lastGame);
+                    System.out.printf("$$$$$$set bet to $ %.1f.\n", p.curBet);
+                } else if (p.lastGame == 2) {
+                    p.setBet(4);
+                    System.out.printf("Current positivity: %d.\tLast game bet was: %d\n", set.positive, p.lastGame);
+                    System.out.printf("$$$$$$set bet to $ %.1f.\n", p.curBet);
+                } else {
+                    System.err.println("error1");
+                    System.exit(0);
+                }
+            }
+            p.lastGame=(int)p.curBet;
+
+            //open game------
+            //System.out.print("Dealer card ");
+            d.addCard(set.intdis());
+            d.addCard(set.intdis());
+            //System.out.print("Player first card ");
+            p.addCard(set.intdis());
+            //System.out.print("Player second card ");
+            p.addCard(set.intdis());
+            System.out.println(d);
+            System.out.println(p);
+            //-------------------------
+
+
+
+
+            if (d.blackjack() && p.blackjack())
+            {
+                System.out.println("PUSH!!!");
+            }else if (d.blackjack() && !p.blackjack())//dealer has bj but player dont
+            {
+                System.out.println("SORRY!!");
+            }
+            else if (p.blackjack() && !d.blackjack())//player has blackjack
+            {
+                System.out.println("Dealer no blackjack");
+                p.win(1.5);
+                System.out.printf("Player gets $ %.1f \n", p.curBet);
+            }
+            else if (!d.blackjack()&&!d.blackjack())//if dealer no blackjack and player no blackjack
+            {
+                System.out.println("-----------------Call section-----------------");
+                if (p.canSplit(0)&&p.handSum(0)!=20)//pairs except 10
+                {
+                    play(splitaction(player[handscount * 10 + 0]));//go to splite with that card
+                }
+                else if (p.hasAce(0)) //if player has an ace
+                {
+                    play(aceaction(temp - 1)); //temp is sum here
+                }
+                else
+                {
+                    play(paction(temp));//just keep playing
+                }
+                dealerflag = 1;//make sure only display dealer's turns once
+//                System.out.print("Please enter dealer hidden hand: ");
+//                dealer[1] = intdis();
+                dealeraction();//dealeraction
+            }
+
+            result();
+            System.out.printf("Player won: $ %.1f\tDealer won: $ %.1f\n",lastp,lastd );
+            System.out.printf("Player win: $ %.1f\tDealer win: $ %.1f\n",playercount,dealercount );
+            lastp=playercount;
+            lastd=dealercount;
+            System.out.printf("Player net winning: $%.1f\n", playercount - dealercount);
+            System.out.printf("Positive: %d\n", positive);
+
+            if (playercount - dealercount>maxmoney) //if current net win > peak
+            {
+                maxmoney = (int)playercount - (int)dealercount; //set new peak
+            }
+            else
+            {
+                if (maxmoney-(playercount - dealercount)>gap)
+                {
+                    gap=(int)maxmoney-((int)playercount - (int)dealercount);
+                }
+            }
+            gamecount++;
+            // file.record((int)playercount - (int)dealercount);
+            // file.recordString("\n");
+        } while (cardcount < totalcard * percent);//how much of the card
+        //cout << "gamecount: " << gamecount << "    This set Used card count: " << cardcount << endl;
+        System.out.printf("Gamecount: %d\tThis set used card count: %d",gamecount,cardcount);
+
+    }
+    System.out.println();
+    System.out.println("===============================================================================");
+    System.out.format("%-16s:%7.0f    %-10s:%5.2f\n", "Player win game", playerwin,"Playerwin rate",playerwin / gamecount);
+    System.out.format("%-16s:%7.0f    %-10s:%5.2f\n", "Dealer win game", dealerwin,"Dealerwin rate",dealerwin / gamecount);
+    System.out.format("%-16s:%7.0f    %-10s:%5.2f\n", "TIE game", tiegame,"Tie rate",tiegame / gamecount);
+    System.out.format("%-16s:%7.0f    %-10s:%5.2f\n", "Double win game", doublerate,"Double win rate",doublerate / gamecount);
+    System.out.format("%-16s:%7.0f    %-10s:%5.2f\n", "Split win game", split,"Split win rate",split / gamecount);
+    System.out.format("%-16s: $%.1f    %s: $%.1f\n", "Player wins", playercount,"Dealer wins",dealercount);
+    System.out.format("%-16s: $%.0f\n","Player net winning", playercount-dealercount);
+    System.out.format("%-16s: $%d    %-10s:$%d\n", "Player max win", maxmoney,"Player max lose",gap);
+
+        }
+    }
+}
+
 //
 //        while (gamecount < gamenum){//loop until desired game amount played
 //            cardcount = 1;

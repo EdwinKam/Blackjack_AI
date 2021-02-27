@@ -11,6 +11,7 @@ public class Distribute {
     public int positive;
     private double percent;
     private int totalCard;
+    Random rand = new Random();
 
     Distribute(){
         this.isSim=false;
@@ -23,8 +24,9 @@ public class Distribute {
         this.totalCard=52*numset;
         deck = new int[totalCard+1];
         create();
+        shuffle();
         this.index =1;
-        this.positive=0;
+
         this.percent=percent;
     }
 
@@ -33,7 +35,7 @@ public class Distribute {
         if(!isSim) { //get from user
             index++; //inc the index, which is the total card distributed
             while (true) {
-                System.out.print("Please enter the card that you got: ");
+                System.out.print("Please enter the card: ");
                 String input = s.next();
                 try {
                     ans = Integer.parseInt(input);
@@ -77,7 +79,7 @@ public class Distribute {
 
     public void shuffle()
     {
-        Random rand = new Random();
+
         for (int i = 1; i < deck.length; i++) {
             int randomIndexToSwap = rand.nextInt(deck.length-1)+1;
             int temp = deck[randomIndexToSwap];
@@ -85,11 +87,14 @@ public class Distribute {
             deck[i] = temp;
         }
         this.index=1; //since we gonna redistribute
+        this.positive=0;
         System.out.println("\n***Shuffling***");
     }
 
-    public boolean nextGame(){
-        return (index>(int)(percent*(double)totalCard));
+    public void checkDeck(){
+        if(index>(int)(percent*(double)totalCard)){
+            shuffle();
+        }
     }
     private void create(){
         deck[0] = 0;

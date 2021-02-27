@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Player {
-    public double baseBet;
+    private double baseBet;
+    public double curBet;
+    public int lastGame;
     public double asset; //how much this player has
     private List<Hand> hands;
 
@@ -15,6 +17,8 @@ public class Player {
         hands.add(new Hand()); //add one hand to this player, no card in this hand
         baseBet=base;
         asset=baseMoney;
+        curBet=base;
+        lastGame=base;
     }
 
     //add card to this player
@@ -51,6 +55,8 @@ public class Player {
         hands.get(hands.size()-1).append(temp);
     }
 
+
+
     //split player index th hand
     public void split(int index){
         assert hands.get(index).canSplit(): "Cant split this hand";
@@ -59,9 +65,22 @@ public class Player {
         hands.get(hands.size()-1).append(temp);
     }
 
+    public boolean canSplit(int index){
+        return hands.get(index).canSplit();
+    }
+
+    public int handSum(int index){
+        return hands.get(index).handSum();
+    }
+
+    public boolean hasAce(int index){
+        return hands.get(index).hasAce;
+    }
+
     public void clear(){
         hands = new ArrayList<Hand>(); //create new hand()
         hands.add(new Hand()); //add one hand to this player, no card in this hand
+        curBet=baseBet;
     }
 
     //sout player hands
@@ -76,4 +95,17 @@ public class Player {
         return str;
     }
 
+    public void setBet(double mult){
+        curBet*=mult;
+    }
+
+    public void win(double mult){
+        asset+=curBet*mult;
+        curBet*=mult;
+    }
+
+    public void lose(double mult){
+        asset-=curBet*mult;
+        curBet*=mult;
+    }
 }
