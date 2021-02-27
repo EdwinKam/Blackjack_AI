@@ -5,8 +5,11 @@ import java.util.Scanner;
 public class AI {
     static int numset = 2;
     static int gameNum = 100;
-    static int curGame =0;
+    static int curGame = 0;
     static double percent = 0.3;
+    static Distribute set = new Distribute(numset, percent);
+    static Player p = new Player(1, 100);
+    static Dealer d = new Dealer();
 
     public static void main(String[] args) {
         //CreateFile file = new CreateFile("number2.txt");
@@ -29,21 +32,18 @@ public class AI {
 //            percent = 0.65;
 //        }
 
-        Distribute set = new Distribute(numset, percent);
-        Player p = new Player(1,100);
-        Dealer d = new Dealer();
-        while(curGame++<gameNum){
+
+        while (curGame++ < gameNum) {
             set.checkDeck(); //check if we need to reset the set
             p.clear();
             d.clear();
-            System.out.printf("%d=======new game==========\n",curGame);
+            System.out.printf("%d=======new game==========\n", curGame);
             if (set.positive <= 3)//if current poaitive less than this number, then set bet to ...
             {
                 p.setBet(1);
                 System.out.printf("Current positivity: %d.\tLast game bet was: %d\n", set.positive, p.lastGame);
                 System.out.printf("$$$$$$set bet to $ %.1f.\n", p.curBet);
-            }
-            else //if greater than that positive
+            } else //if greater than that positive
             {
                 if (p.lastGame == 1) {
                     p.setBet(2);
@@ -62,7 +62,7 @@ public class AI {
                     System.exit(0);
                 }
             }
-            p.lastGame=(int)p.curBet;
+            p.lastGame = (int) p.curBet;
 
             //open game------
             //System.out.print("Dealer card ");
@@ -77,34 +77,26 @@ public class AI {
             //-------------------------
 
 
-
-
-            if (d.blackjack() && p.blackjack())
-            {
+            if (d.blackjack() && p.blackjack()) {
                 System.out.println("PUSH!!!");
-            }else if (d.blackjack() && !p.blackjack())//dealer has bj but player dont
+            } else if (d.blackjack() && !p.blackjack())//dealer has bj but player dont
             {
                 System.out.println("SORRY!!");
-            }
-            else if (p.blackjack() && !d.blackjack())//player has blackjack
+            } else if (p.blackjack() && !d.blackjack())//player has blackjack
             {
                 System.out.println("Dealer no blackjack");
                 p.win(1.5);
                 System.out.printf("Player gets $ %.1f \n", p.curBet);
-            }
-            else if (!d.blackjack()&&!d.blackjack())//if dealer no blackjack and player no blackjack
+            } else if (!d.blackjack() && !d.blackjack())//if dealer no blackjack and player no blackjack
             {
                 System.out.println("-----------------Call section-----------------");
-                if (p.canSplit(0)&&p.handSum(0)!=20)//pairs except 10
+                if (p.canSplit(0) && p.handSum(0) != 20)//pairs except 10
                 {
                     play(splitaction(player[handscount * 10 + 0]));//go to splite with that card
-                }
-                else if (p.hasAce(0)) //if player has an ace
+                } else if (p.hasAce(0)) //if player has an ace
                 {
                     play(aceaction(temp - 1)); //temp is sum here
-                }
-                else
-                {
+                } else {
                     play(paction(temp));//just keep playing
                 }
                 dealerflag = 1;//make sure only display dealer's turns once
@@ -114,46 +106,523 @@ public class AI {
             }
 
             result();
-            System.out.printf("Player won: $ %.1f\tDealer won: $ %.1f\n",lastp,lastd );
-            System.out.printf("Player win: $ %.1f\tDealer win: $ %.1f\n",playercount,dealercount );
-            lastp=playercount;
-            lastd=dealercount;
+            System.out.printf("Player won: $ %.1f\tDealer won: $ %.1f\n", lastp, lastd);
+            System.out.printf("Player win: $ %.1f\tDealer win: $ %.1f\n", playercount, dealercount);
+            lastp = playercount;
+            lastd = dealercount;
             System.out.printf("Player net winning: $%.1f\n", playercount - dealercount);
             System.out.printf("Positive: %d\n", positive);
 
-            if (playercount - dealercount>maxmoney) //if current net win > peak
+            if (playercount - dealercount > maxmoney) //if current net win > peak
             {
-                maxmoney = (int)playercount - (int)dealercount; //set new peak
-            }
-            else
-            {
-                if (maxmoney-(playercount - dealercount)>gap)
-                {
-                    gap=(int)maxmoney-((int)playercount - (int)dealercount);
+                maxmoney = (int) playercount - (int) dealercount; //set new peak
+            } else {
+                if (maxmoney - (playercount - dealercount) > gap) {
+                    gap = (int) maxmoney - ((int) playercount - (int) dealercount);
                 }
             }
             gamecount++;
             // file.record((int)playercount - (int)dealercount);
             // file.recordString("\n");
-        } while (cardcount < totalcard * percent);//how much of the card
+        }
+        while (cardcount < totalcard * percent) ;//how much of the card
         //cout << "gamecount: " << gamecount << "    This set Used card count: " << cardcount << endl;
-        System.out.printf("Gamecount: %d\tThis set used card count: %d",gamecount,cardcount);
+        System.out.printf("Gamecount: %d\tThis set used card count: %d", gamecount, cardcount);
 
+        System.out.println();
+        System.out.println("===============================================================================");
+        System.out.format("%-16s:%7.0f    %-10s:%5.2f\n", "Player win game", playerwin, "Playerwin rate", playerwin / gamecount);
+        System.out.format("%-16s:%7.0f    %-10s:%5.2f\n", "Dealer win game", dealerwin, "Dealerwin rate", dealerwin / gamecount);
+        System.out.format("%-16s:%7.0f    %-10s:%5.2f\n", "TIE game", tiegame, "Tie rate", tiegame / gamecount);
+        System.out.format("%-16s:%7.0f    %-10s:%5.2f\n", "Double win game", doublerate, "Double win rate", doublerate / gamecount);
+        System.out.format("%-16s:%7.0f    %-10s:%5.2f\n", "Split win game", split, "Split win rate", split / gamecount);
+        System.out.format("%-16s: $%.1f    %s: $%.1f\n", "Player wins", playercount, "Dealer wins", dealercount);
+        System.out.format("%-16s: $%.0f\n", "Player net winning", playercount - dealercount);
+        System.out.format("%-16s: $%d    %-10s:$%d\n", "Player max win", maxmoney, "Player max lose", gap);
     }
-    System.out.println();
-    System.out.println("===============================================================================");
-    System.out.format("%-16s:%7.0f    %-10s:%5.2f\n", "Player win game", playerwin,"Playerwin rate",playerwin / gamecount);
-    System.out.format("%-16s:%7.0f    %-10s:%5.2f\n", "Dealer win game", dealerwin,"Dealerwin rate",dealerwin / gamecount);
-    System.out.format("%-16s:%7.0f    %-10s:%5.2f\n", "TIE game", tiegame,"Tie rate",tiegame / gamecount);
-    System.out.format("%-16s:%7.0f    %-10s:%5.2f\n", "Double win game", doublerate,"Double win rate",doublerate / gamecount);
-    System.out.format("%-16s:%7.0f    %-10s:%5.2f\n", "Split win game", split,"Split win rate",split / gamecount);
-    System.out.format("%-16s: $%.1f    %s: $%.1f\n", "Player wins", playercount,"Dealer wins",dealercount);
-    System.out.format("%-16s: $%.0f\n","Player net winning", playercount-dealercount);
-    System.out.format("%-16s: $%d    %-10s:$%d\n", "Player max win", maxmoney,"Player max lose",gap);
 
+
+    //functions
+    public static int paction(int choice)//without Ace
+    {
+        //1 = hit;
+        //2 = double
+        //3 = stand
+        //4 = split
+        switch (choice) {
+            case 5:
+            case 6:
+            case 7:
+            case 8: {
+                //cout << "***player called hit" << endl;
+                return 1;
+            }
+            //break;
+            case 9:
+                if (d.face() <= 6 && d.face() > 2) {
+                    //cout << "***player called double" << endl;
+                    return 2;
+
+                } else {
+                    //cout << "***player called hit" << endl;
+                    return 1;
+                }
+
+                //  break;
+            case 10:
+                if (d.face() <= 9 && d.face() > 1) {
+                    //cout << "***player called double" << endl;
+                    return 2;
+
+                } else {
+                    //cout << "***player called hit" << endl;
+                    return 1;
+                }
+
+
+                //break;
+            case 11:
+                if (p.blackjack())
+                    return 3;
+                else {
+                    //cout << "***player called double" << endl;
+                    return 2;
+                }
+
+                // break;
+            case 12:
+                if (d.face() >= 4 && d.face() <= 6) {
+                    //cout << "***player called stand" << endl;
+                    return 3;
+
+                } else {
+                    //cout << "***player called hit" << endl;
+                    return 1;
+                }
+
+                // break;
+            case 13:
+            case 14:
+                if (d.face() <= 6 && d.face() > 1) {
+                    //cout << "***player called stand" << endl;
+                    return 3;
+
+                } else {
+                    //cout << "***player called hit" << endl;
+                    return 1;
+                }
+            case 15:
+            case 16:
+                if (d.face() <= 6 && d.face() > 1) {
+                    //cout << "***player called stand" << endl;
+                    return 3;
+
+                } else if (set.positive >= 4) {
+                    System.out.printf("Positive >= 4, player should call stand!!!!!!!!!!!");
+//                if(!fifteen[handscount]){
+//                    fifteen[handscount]=true;
+//                    p15++;
+//                }
+                    // save[pan++] = gamecount + 1;//save split game
+                    return 3;
+                } else {
+                    //save[pan++] = gamecount + 1;//save split game
+//                if(!fifteen[handscount]){
+//                    fifteen[handscount]=true;
+//                    p15++;
+//                }
+                    System.out.println("Inced!!!!!!!!!!!!!");
+                    //cout << "***player called hit" << endl;
+                    return 1;
+                }
+            case 17:
+            case 18:
+            case 19:
+            case 20:
+            case 21: {
+                //cout << "***player called stand" << endl;
+                return 3;
+            }
+
+
+            //  break;
+            default:
+
+                System.err.printf("main(): error2 got input of case %d", choice);
+                System.exit(0);
+                return 0;
+            //  break;
         }
     }
+
+    public static int aceaction(int hand)
+    {
+        switch (hand)
+        {
+            case 2:
+            case 3:
+                if (d.face() <= 4 || d.face() >= 7)//1-4, 7-10
+                {
+                    //cout << "***player called hit" << endl;
+                    return 1;
+                }
+                else
+                {
+                    //cout << "***player called double" << endl;
+                    return 2;
+                }
+                //   break;
+            case 4:
+            case 5:
+                if (d.face() <= 3 || d.face() >= 7)//1-3,7-10
+                {
+                    //cout << "***player called hit" << endl;
+                    return 1;
+                }
+                else
+                {
+                    //cout << "***player called double" << endl;
+                    return 2;
+                }
+                // break;
+            case 6:
+                if (d.face() >= 3 && d.face() <= 6)//3-6
+                {
+                    //cout << "***player called double" << endl;
+                    return 2;
+                }
+                else
+                {
+                    //cout << "***player called hit" << endl;
+                    return 1;
+                }
+                // break;
+            case 7:
+                if (d.face() == 9 || d.face() == 10 || d.face()== 1)//9, 10 , 1
+                {
+                    //cout << "***player called hit" << endl;
+                    return 1;
+                }
+                else if (d.face()== 2 || d.face() == 7 || d.face() == 8)//2, 7 , 8
+                {
+                    //cout << "***player called stand" << endl;
+                    return 3;
+                }
+                else
+                {
+                    //cout << "***player called double" << endl;
+                    return 2;
+                }
+                // break;
+            case 8:
+            case 9:
+            case 10: //cout << "***player called stand" << endl;
+                return 3;
+            //break;
+            default:
+                //cout << "error3 got input of case "<< hand;
+                System.err.printf("error3 got input of case %d", hand);
+                System. exit(0);
+                return 0;
+            // break;
+        }
+    }
+
+    public static int splitaction(int hand)
+    {
+        switch (hand)
+        {
+            case 1:
+                //cout << "***player called split" << endl;
+                return 5;
+            // break;
+            case 2:
+            case 3:
+                if (d.face() >= 4 && d.face() <= 7)
+                {
+                    //cout << "***player called split" << endl;
+                    return 4;
+                }
+                else
+                {
+                    //cout << "***player called hit" << endl;
+                    return 1;
+                }
+                // break;
+            case 4:
+                if (d.face() >= 5 && d.face() <= 6)
+                {
+                    //cout << "***player called split" << endl;
+                    return 4;
+                }
+                else
+                {
+                    //cout << "***player called hit" << endl;
+                    return 1;
+                }
+            case 5:
+                if (d.face() == 1 || d.face() == 10)
+                {
+                    //cout << "***player called hit" << endl;
+                    return 1;
+                }
+                else
+                {
+                    //cout << "***player called double" << endl;
+                    return 2;
+                }
+                // break;
+            case 6:
+                if (d.face() >= 2 && d.face() <= 6)
+                {
+                    //cout << "***player called split" << endl;
+                    return 4;
+                }
+                else
+                {
+                    //cout << "***player called hit" << endl;
+                    return 1;
+                }
+                // break;
+            case 7:
+                if (d.face() >= 2 && d.face() <= 7)
+                {
+                    //cout << "***player called split" << endl;
+                    return 4;
+                }
+                else
+                {
+                    //cout << "***player called hit" << endl;
+                    return 1;
+                }
+                // break;
+            case 8:
+                //cout << "***player called split" << endl;
+                return 4;
+            //break;
+
+            case 9:
+                if (d.face() == 7 || d.face() == 10 || d.face() == 1)
+                {
+                    //    cout << "***player called stand" << endl;
+                    return 3;
+                }
+                else
+                {
+                    //cout << "***player called split" << endl;
+                    return 4;
+                }
+                //  break;
+            default:
+                //cout << "error4 got input of case "<< hand;
+                System.err.printf("main(): error4 got input of case %d", hand);
+                System. exit(0);
+                return 0;
+            // break;
+        }
+    }
+
+
+    public static void play(int action)//1hit 2double 3stand 4split 5splithit
+    {
+
+        switch (action)
+        {
+            case 1: //hit
+                //cout  << handscount + 1 << "player called hit" << endl;
+                System.out.printf("%dplayer called hit\n", handscount+1);
+                System.out.print("Enter player hit card: ");
+                player[++playerhandcount] = intdis();//distribute from play[2]
+                psum = sum(player, handscount);//player sum
+                coutcard(player, "Player", handscount);//display card;
+
+                if (sum(player, handscount) < 12 && checkace(player, handscount))//check whether stand with ace
+                {
+                    if (aceaction(sum(player, handscount) - 1) == 1 || aceaction(sum(player, handscount) - 1) == 1)//if supposed hit or double//both changed to 1 hit
+                    {
+                        play(1);//play(hit)
+                    }
+                    else
+                    {
+                        play(3);//play(stand)
+
+                    }
+                }
+                else if (sum(player, handscount) < 22)//without ace but <22
+                {
+                    if (paction(sum(player, handscount)) == 1 || paction(sum(player, handscount)) == 2)//if supposed hit or double
+                    {
+                        play(1);//play(hit)
+                    }
+                    else
+                    {
+                        play(3);//play(stand)
+
+                    }
+                }
+                else
+                    pbust(player, handscount);//player busts
+                break;
+            case 2: //double
+                doublerate++;
+                checkdouble = 1;//double flag
+                bet[handscount] = bet[handscount] * 2;//double the bet
+                // cout << handscount + 1 << "player called double" << endl;
+                System.out.printf("%dplayer called double\n", handscount+1);
+                System.out.printf("$$bet of $ %.1f \n", bet[handscount]);
+                System.out.print("Enter player double card: ");
+                player[handscount * 10 + 2] = intdis();
+                acevalue(player, handscount);//determine ace value
+                coutcard(player, "Player", handscount);
+                pbust(player, handscount);//check player busts
+                break;
+            case 3://stand
+                acevalue(player, handscount);
+                //cout << handscount + 1 << "player called stand\t\t\tFinal: " <<handscount +1<< "Player sum: " << sum(player, handscount) << endl;
+                System.out.printf("%dplayer called stand\n", handscount+1);
+                //coutcard(player, "Player",handscount);
+
+                break;
+            case 4: //split
+
+//                System.out.println("(((((((((((((((((((((((((((((((((((((((((((((((((((((((((((");
+                System.out.printf("%dplayer called split\n", handscount+1);
+                int i = 0;
+                if(pan>80){
+                    pan=0;
+                }
+
+
+                split++;
+                while (player[i * 10] != 0)
+                {
+                    i++;
+                    //find the next empty stack
+                }
+                if(i==2){
+                    // gg=gamecount;
+                }
+                System.out.print("assign second card to first hand: ");
+                player[handscount * 10 + 1] = intdis();//assign second card to first hand
+                coutcard(player, "Player", handscount);//display 1player
+                //handscount++;//next hand
+                if (player[0]==11){///split the card the second hand
+                    player[i * 10] = 1;//however, if play[0] has ace but value of 11 could lead error
+                }
+                //so just assign it to one
+                else
+                {
+                    player[i * 10] =player[0];//otherwise assign second player the first player[o]
+                }
+                System.out.print("assign second card to second hand: ");
+                player[i * 10 + 1] = intdis();//assign second card to second hand
+                coutcard(player, "Player", i);//display second hand
+                //handscount--;//next hand
+                System.out.printf("----------------%dPlayer turn-----------------", handscount+1);
+                start();//finish first hand
+                handscount = i;//next hand
+                System.out.printf("----------------%dPlayer turn-----------------", handscount+1);
+                coutcard(player, "Player", handscount);//display second hand
+                //cout << "count" << handscount << endl;
+                playerhandcount = 1 + i * 10;//make sure disturebute to next stack
+                //cout << "playerhandcount" << playerhandcount<<endl;
+
+                start();//finish second hand
+                //handscount++;
+                break;
+
+            case 5://ace split
+                //save[pan++]=gamecount;//save split gamecount
+                split++;
+                gg=gamecount;
+                player[1]=intdis();//distribute first hand second card
+                player[10]=player[0];//distribute second hand first card
+                //coutcard(player, "player",handscount);//display first hand
+                acevalue(player, handscount);//determine ace value
+                coutcard(player, "Player", handscount);
+                pbust(player, handscount);//check player busts
+                handscount++;
+
+                player[11]=intdis();
+                //coutcard(player, "player",handscount);
+                acevalue(player, handscount);//determine ace value
+                coutcard(player, "Player", handscount);
+                pbust(player, handscount);//check player busts
+                break;
+
+            default:
+                // cout << "error5 got input of case "<<action;
+                System.err.printf("error5 got input of case %d",action);
+                System. exit(0);
+                break;
+        }
+    }
+    public static void dealeraction()
+    {
+        boolean pbust=true;//to see if dealer needs action
+        for(int i=0;i<p.size();i++){
+            if (!p.bust(i)){
+                pbust=false;
+            }
+        }
+
+        if (!pbust)//dealer needs action
+        {
+            if (dealerflag == 1) {
+                System.out.println("----------------Dealer turn-------------------");
+                coutcard(dealer, "Dealer", 0);
+                dealerflag = 0;//set dealer flag to 0 so it wouldnt display again
+            }
+            playerhandcount = 1;//initial playerhand
+            if (sum(dealer, 0) > 21)
+            {
+                dbust(dealer);//cehck dealer busts
+            }
+            else if (!checkace(dealer, 0) && sum(dealer, 0) > 16)//dealer sum >17
+            {
+                System.out.printf("Dealer stand \t\t\tdealer sum: %d\n", sum(dealer,0));
+
+
+            }
+            else if (checkace(dealer, 0) && sum(dealer, 0) > 7 && sum(dealer, 0) < 12)//dealer has ace and dealer sum-1 is 7-10
+            {
+                acevalue(dealer, 0);
+                System.out.printf("Dealer stand \t\t\tdealer sum: %d\n", sum(dealer,0));
+
+
+            }
+            else if (checkace(dealer, 0) && (sum(dealer, 0) - 1) == 6) //soft 17, ace and 6
+            {
+                System.out.println("Dealer soft 17!!!!!!!!!!!!!!!!!!!!!");
+                System.out.print("Enter Dealer: ");
+                dealer[dealerhandcount++] = intdis();
+                acevalue(dealer, 0);
+                coutcard(dealer, "Dealer", 0);
+                dbust(dealer);//check dealer busts
+                if (sum(dealer, 0) < 17)//if still <17
+                {
+                    System.out.print("Enter Dealer: ");
+                    dealer[dealerhandcount] = intdis();//distribute third card
+                    dealerhandcount++;
+                    coutcard(dealer, "Dealer", 0);
+                    dealeraction();//do dealer action again
+                }
+            }
+            else if (sum(dealer, 0) < 17)//if still <17
+            {
+                System.out.print("Enter Dealer: ");
+                dealer[dealerhandcount] = intdis();//distribute third card
+                dealerhandcount++;
+                coutcard(dealer, "Dealer", 0);
+                dealeraction();//do dealer action again
+            }
+        }
+    }
+    //end main class
 }
+
+
+
 
 //
 //        while (gamecount < gamenum){//loop until desired game amount played

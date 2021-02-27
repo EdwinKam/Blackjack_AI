@@ -80,6 +80,10 @@ public class Hand {
             return false;
         }
     }
+
+    public int getFirst(){
+        return hand.get(0).value();
+    }
     public String toString(){
         return hand.toString();
     }

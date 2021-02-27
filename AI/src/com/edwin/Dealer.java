@@ -23,6 +23,9 @@ public class Dealer {
         return hand.blackjack();
     }
 
+    public int face(){
+        return hand.getFirst();
+    }
     public String toString(){
         return String.format("Dealer: %s \t\tSum: %d",hand.toString(), hand.handSum());
     }

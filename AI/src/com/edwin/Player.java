@@ -83,6 +83,9 @@ public class Player {
         curBet=baseBet;
     }
 
+    public int size(){
+        return hands.size();
+    }
     //sout player hands
     public String toString(){
         String str="Player";
