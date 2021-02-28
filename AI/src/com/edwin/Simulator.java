@@ -2,7 +2,7 @@ package com.edwin;
 
 import java.util.*;
 
-public class Distribute {
+public class Simulator {
     private boolean isSim; //true then using sumulator
     static Scanner s = new Scanner(System.in);
     private int numset;
@@ -13,12 +13,12 @@ public class Distribute {
     private int totalCard;
     Random rand = new Random();
 
-    Distribute(){
+    Simulator(){
         this.isSim=false;
         this.positive =0;
         this.index=1;
     }
-    Distribute(int numset, double percent){ //maybe wanna take more para, such as when reshuffle
+    Simulator(int numset, double percent){ //maybe wanna take more para, such as when reshuffle
         this.isSim = true;
         this.numset=numset;
         this.totalCard=52*numset;

@@ -3,7 +3,7 @@
 //public class test {
 //    static Player p = new Player("Player",1,100);
 //    static Player d = new Player("Dealer",1,100);
-//    static Distribute set = new Distribute();
+//    static Simulator set = new Simulator();
 //    public static void main(String[] args){
 //        p.addCard(13);
 //        p.addCard(7);

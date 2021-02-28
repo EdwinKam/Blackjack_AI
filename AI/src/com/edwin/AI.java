@@ -7,8 +7,8 @@ public class AI {
     static int gameNum = 10;
     static int curGame = 0;
     static double percent = 0.3;
-//    static Distribute set = new Distribute(numset, percent);
-static Distribute set = new Distribute();
+//    static Simulator set = new Simulator(numset, percent);
+static Simulator set = new Simulator();
     static Player p = new Player("Player", 1, 100);
     static Player d = new Player("Dealer", 1, 100);
     static int handscount = 0;
