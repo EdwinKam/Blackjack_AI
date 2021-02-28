@@ -7,7 +7,7 @@ public class Hand {
     private List<Card> hand;
     public boolean hasAce;
     private double bet; //bet ont this hand
-    private boolean doubled;
+    public boolean doubled;
     //constructor
     Hand(double base){
         hand = new ArrayList<>();
@@ -18,7 +18,7 @@ public class Hand {
 
     //add cards
     public void append(int num){
-        if(doubled&&hand.size()>=2){
+        if(doubled&&hand.size()>2){
             throw new IllegalArgumentException("No append again because doubled");
         }
         if(num==1||num==11){
@@ -29,7 +29,7 @@ public class Hand {
 
     //add card, take Card obj
     public void append(Card card){
-        if(doubled&&hand.size()>=2){
+        if(doubled&&hand.size()>2){
             throw new IllegalArgumentException("No append again because doubled");
         }
         if(card.value()==1||card.value()==11){

@@ -165,4 +165,8 @@ public class Player {
         return hands.get(0).withoutAce();
     }
 
+    public boolean doubled(int index){
+        return hands.get(index).doubled;
+    }
+
 }
