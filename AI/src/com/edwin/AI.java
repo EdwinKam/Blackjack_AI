@@ -67,11 +67,9 @@ public class AI {
             p.lastGame = (int) p.curBet;
 
             //open game------
-            System.out.print("Player card ");
-            p.addCard(set.intdis());
-            p.addCard(set.intdis());
-            //System.out.print("Dealer first card ");
-            d.addCard(set.intdis());
+            p.addCard(set.intdis("Player first card: "));
+            p.addCard(set.intdis("Player second card:"));
+            d.addCard(set.intdis("Dealer first: : "));
             System.out.println(d);
             System.out.println(p);
             //-------------------------
@@ -80,11 +78,11 @@ public class AI {
                 //ask if dealer has bj
                 System.out.print("Dealer has blackjack?");
                 if (set.getIsSim()) { //if its simulator, just int second second
-                    d.addCard(set.intdis());
+                    d.addCard(set.intdis("Simlualtor"));
                 } else {
                     Scanner s = new Scanner(System.in);
                     if (s.nextBoolean()) {
-                        d.addCard(set.intdis());
+                        d.addCard(set.intdis("Enter dealer hidden card: should be 10 or A: "));
                     }
                 }
             }
@@ -107,8 +105,7 @@ public class AI {
                     play(paction(p.handSum(handscount)));//just keep playing
                 }
                 //ask dealer hidden card after player is done
-                System.out.print("Please enter dealer hidden hand: ");
-                d.addCard(set.intdis());
+                d.addCard(set.intdis("Please enter dealer hidden hand: "));
 
                 //dealer turn
                 for (int i = 0; i < p.size(); i++) {
@@ -165,11 +162,8 @@ public class AI {
             case 1: //hit
                 //cout  << handscount + 1 << "player called hit" << endl;
                 System.out.printf("%dplayer called hit\n", handscount + 1);
-                System.out.print("Enter player hit card: ");
-                p.addCard(handscount,set.intdis());//distribute from play[2]
+                p.addCard(handscount,set.intdis("Enter next player card"));//distribute from play[2]
                 System.out.println(p);
-//                psum = sum(player, handscount);//player sum
-//                coutcard(player, "Player", handscount);//display card;
 
                 if (p.handSum(handscount) < 12 && p.hasAce(handscount))//check whether stand with ace
                 {
@@ -196,8 +190,7 @@ public class AI {
 //                doublerate++;
 //                checkdouble = 1;//double flag
                 p.setDouble(handscount);
-                System.out.print("Enter player double card: ");
-                p.addCard(handscount, set.intdis());
+                p.addCard(handscount, set.intdis("Enter player double card: "));
                 break;
             case 3://stand
                 System.out.printf("%dplayer called stand\n", handscount + 1);
@@ -206,10 +199,8 @@ public class AI {
             case 4: //split
 //                split++;
                 p.split(handscount); //will assign to next avaiable hand
-                System.out.printf("Enter 2nd card for player%d", handscount + 1);
-                p.addCard(handscount, set.intdis());
-                System.out.printf("Enter 2nd card for player%d", p.getLast() + 1);
-                p.addCard(p.getLast(), set.intdis());
+                p.addCard(handscount, set.intdis(String.format("Enter 2nd card for player%d", handscount + 1)));
+                p.addCard(p.getLast(), set.intdis(String.format("Enter 2nd card for player%d", p.getLast() + 1)));
                 System.out.println(p);
                 while(handscount<=p.getLast()){
                     System.out.printf("----------------%dPlayer turn-----------------", handscount + 1);
@@ -222,10 +213,13 @@ public class AI {
 //                split++;
 //                gg=gamecount;
                 p.split(handscount);
-                System.out.print("second card to first Ace: ");
-                p.addCard(handscount,set.intdis());
-                System.out.print("second card to the other Ace: ");
-                p.addCard(p.getLast(),set.intdis());
+                p.addCard(handscount,set.intdis("second card to first Ace: "));
+                p.addCard(p.getLast(),set.intdis("second card to the other Ace: "));
+                while(handscount<=p.getLast()){
+                    System.out.printf("----------------%dPlayer turn-----------------", handscount + 1);
+                    start();//finish first hand
+                    handscount++;//next hand
+                }
                 break;
 
             default:
@@ -494,8 +488,7 @@ public class AI {
             System.out.printf("Dealer stand \t\t\tdealer sum: %d\n", d.handSum());
         }else if ((d.hasAce() && d.withoutAce() == 6) || d.handSum() < 17) { //soft 17, ace and 6
             System.out.println("Dealer soft 17!!!!!!!!!!!!!!!!!!!!!");
-            System.out.print("Enter Dealer: ");
-            d.addCard(set.intdis());
+            d.addCard(set.intdis("Enter Dealer next: "));
             System.out.println(d);
             dealeraction();
         }

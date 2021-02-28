@@ -30,12 +30,12 @@ public class Distribute {
         this.percent=percent;
     }
 
-    public int intdis(){
+    public int intdis(String message){
         int ans;
         if(!isSim) { //get from user
             index++; //inc the index, which is the total card distributed
             while (true) {
-                System.out.print("Please enter the card: ");
+                System.out.print(message);
                 String input = s.next();
                 try {
                     ans = Integer.parseInt(input);
