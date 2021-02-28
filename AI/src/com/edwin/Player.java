@@ -65,8 +65,10 @@ public class Player {
             throw new IllegalArgumentException("Card cannot be split");
         }
         Card temp = hands.get(index).remove();
+        hands.get(index).splited=true;
         hands.add(new Hand(curBet)); //add another hand
         hands.get(hands.size()-1).append(temp);
+        hands.get(hands.size()-1).splited=true;
     }
 
     public boolean canSplit(int index){
@@ -167,6 +169,10 @@ public class Player {
 
     public boolean doubled(int index){
         return hands.get(index).doubled;
+    }
+
+    public boolean splited(int index){
+        return hands.get(index).splited;
     }
 
 }

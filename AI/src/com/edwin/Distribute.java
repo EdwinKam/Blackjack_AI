@@ -79,7 +79,9 @@ public class Distribute {
 
     public void shuffle()
     {
-
+        if(!isSim){
+            return;
+        }
         for (int i = 1; i < deck.length; i++) {
             int randomIndexToSwap = rand.nextInt(deck.length-1)+1;
             int temp = deck[randomIndexToSwap];
@@ -92,6 +94,9 @@ public class Distribute {
     }
 
     public void checkDeck(){
+        if(!isSim){
+            return;
+        }
         if(index>(int)(percent*(double)totalCard)){
             shuffle();
         }
@@ -101,6 +106,9 @@ public class Distribute {
         return index;
     }
     private void create(){
+        if(!isSim){
+            return;
+        }
         deck[0] = 0;
         for (int i = 0; i < this.numset*4; i++)//new set of card
         {

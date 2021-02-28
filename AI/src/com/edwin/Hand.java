@@ -8,11 +8,13 @@ public class Hand {
     public boolean hasAce;
     private double bet; //bet ont this hand
     public boolean doubled;
+    public boolean splited;
     //constructor
     Hand(double base){
         hand = new ArrayList<>();
         hasAce = false;
         doubled = false;
+        splited = false;
         bet=base;
     }
 
