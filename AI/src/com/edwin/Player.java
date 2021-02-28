@@ -144,7 +144,7 @@ public class Player {
 
     public void result(int dsum){
         for(int i=0;i<hands.size();i++){
-            if(dsum<=21||(hands.get(i).bust()||dsum>hands.get(i).handSum())){
+            if(hands.get(i).bust()||(dsum<=21&&dsum>hands.get(i).handSum())){
                 lose(i);
             }else if(dsum>21||dsum<hands.get(i).handSum()){
                 win(i);

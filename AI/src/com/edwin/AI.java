@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 public class AI {
     static int numset = 2;
-    static int gameNum = 100;
+    static int gameNum = 10;
     static int curGame = 0;
     static double percent = 0.3;
     static Distribute set = new Distribute(numset, percent);
@@ -73,14 +73,17 @@ public class AI {
             System.out.println(d);
             System.out.println(p);
             //-------------------------
-
+            
+            boolean secondDis = false;
             if (d.handSum() == 1 || d.handSum() == 10) { //ask if dealer has blackjack if dealer has A or 10
                 //ask if dealer has bj
-                System.out.print("Dealer has blackjack?");
+
                 if (set.getIsSim()) { //if its simulator, just int second second
                     d.addCard(set.intdis("Simlualtor"));
+                    secondDis = true;
                 } else {
                     Scanner s = new Scanner(System.in);
+                    System.out.println("Dealer has blackjack?");
                     if (s.nextBoolean()) {
                         d.addCard(set.intdis("Enter dealer hidden card: should be 10 or A: "));
                     }
@@ -88,11 +91,14 @@ public class AI {
             }
             if (d.blackjack() && p.blackjack()) { //if dealer and player have bj
                 System.out.println("everyone has blackjack PUSH!!!!");
+                p.result(d.handSum());
             } else if (d.blackjack() && !p.blackjack()) {//dealer has bj but player dont
                 System.out.println("SORRY!!");
+                p.result(d.handSum());
             } else if (p.blackjack() && !d.blackjack()) {//player has blackjack
                 System.out.println("Dealer no blackjack");
                 p.setBet(1.5);
+                p.result(d.handSum());
             } else if (!d.blackjack() && !d.blackjack()) {//if dealer no blackjack and player no blackjack
                 System.out.println("-----------------Call section-----------------");
                 if (p.canSplit(handscount) && p.handSum(handscount) != 20)//pairs except 10
@@ -105,8 +111,11 @@ public class AI {
                     play(paction(p.handSum(handscount)));//just keep playing
                 }
                 //ask dealer hidden card after player is done
-                d.addCard(set.intdis("Please enter dealer hidden hand: "));
-
+                
+                if(!secondDis){ //if second card not yet distribute
+                    d.addCard(set.intdis("Please enter dealer hidden hand: "));
+                }
+                System.out.println(d);
                 //dealer turn
                 for (int i = 0; i < p.size(); i++) {
                     if (!p.bust(i)) {
@@ -115,6 +124,9 @@ public class AI {
                         break;
                     }
                 }
+                System.out.println(p);
+                System.out.println(d);
+                p.result(d.handSum());
             } else {
                 throw new IllegalArgumentException("error main(): bj error");
             }
@@ -238,6 +250,7 @@ public class AI {
         //3 = stand
         //4 = split
         switch (sum) {
+//            case4: //error
             case 5:
             case 6:
             case 7:
@@ -487,7 +500,7 @@ public class AI {
         if (d.handSum() >= 17){//dealer sum >17
             System.out.printf("Dealer stand \t\t\tdealer sum: %d\n", d.handSum());
         }else if ((d.hasAce() && d.withoutAce() == 6) || d.handSum() < 17) { //soft 17, ace and 6
-            System.out.println("Dealer soft 17!!!!!!!!!!!!!!!!!!!!!");
+//            System.out.println("Dealer soft 17!!!!!!!!!!!!!!!!!!!!!");
             d.addCard(set.intdis("Enter Dealer next: "));
             System.out.println(d);
             dealeraction();
