@@ -1,4 +1,4 @@
 # How to run?
-- Go to src/AI.java
-- Download AI.java
-- Go to Terminal, run `java AI.java`
+- Go to src
+- run `javac com/edwin/*.java`
+- run `java com/edwin/AI`
