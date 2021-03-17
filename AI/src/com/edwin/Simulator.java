@@ -56,6 +56,9 @@ public class Simulator {
                     } else if (input.equals("k")) {
                         ans= 14;
                         break;
+                    } else if (input.equals("done")) {
+                        ans= -1;
+                        break;
                     }
                 }
                 System.out.println("Please enter a valid card 2-10, AJQK");

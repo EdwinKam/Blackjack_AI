@@ -1,6 +1,6 @@
 package com.edwin;
 //ooo
-import java.util.Scanner;
+import java.util.*;
 
 public class AI {
     static int numset = 2;
@@ -8,7 +8,7 @@ public class AI {
     static int curGame = 0;
     static double percent = 0.3;
 //    static Simulator set = new Simulator(numset, percent);
-static Simulator set = new Simulator();
+    static Simulator set = new Simulator();
     static Player p = new Player("Player", 1, 100);
     static Player d = new Player("Dealer", 1, 100);
     static int handscount = 0;
@@ -68,9 +68,20 @@ static Simulator set = new Simulator();
             p.lastGame = (int) p.curBet;
 
             //open game------
+            
             p.addCard(set.intdis("Player first card: "));
             p.addCard(set.intdis("Player second card:"));
-            d.addCard(set.intdis("Dealer first: : "));
+            d.addCard(set.intdis("Dealer first: "));
+            int others=0;
+            List<Card> list = new LinkedList<>();
+            while(others!=-1){ //if "done" input, it will return -1
+                others=set.intdis("Enter all other players' cards one by one, type \"done\" to finish: ");
+                if(others!=-1){
+                    list.add(new Card(others));
+                }
+            }
+            System.out.print("The following cards were input: ");
+            System.out.println(list.toString());
             System.out.println(d);
             System.out.println(p);
             //-------------------------
@@ -128,10 +139,19 @@ static Simulator set = new Simulator();
                 System.out.println(p);
                 System.out.println(d);
                 p.result(d.handSum());
-                System.out.println("Player asset: "+p.asset);
+                
             } else {
                 throw new IllegalArgumentException("error main(): bj error");
             }
+            others=0; //reset other, because others should be -1 now
+            list = new LinkedList<>();
+            while(others!=-1){ //if "done" input, it will return -1
+                others=set.intdis("Enter all other players' cards one by one, type \"done\" to finish: ");
+                if(others!=-1){
+                    list.add(new Card(others));
+                }
+            }
+            System.out.println("Player asset: "+p.asset);
         }
         
     }
@@ -179,7 +199,7 @@ static Simulator set = new Simulator();
             case 1: //hit
                 //cout  << handscount + 1 << "player called hit" << endl;
                 System.out.printf("%dplayer called hit\n", handscount + 1);
-                p.addCard(handscount,set.intdis("Enter next player card"));//distribute from play[2]
+                p.addCard(handscount,set.intdis("Enter next player card: "));//distribute from play[2]
                 System.out.println(p);
 
                 if (p.handSum(handscount) < 12 && p.hasAce(handscount))//check whether stand with ace
